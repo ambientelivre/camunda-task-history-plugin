@@ -15,29 +15,30 @@
  * limitations under the License.
  */
 
-let cb = el => console.error("No callback defined: ", el);
+let cb = (el) => console.error("No callback defined: ", el);
 const diagramPlugin = {
   id: "Diagram Interaction",
   pluginPoint: "cockpit.processDefinition.diagram.plugin",
   priority: 5,
-  render: viewer => {
-    viewer.get("eventBus").on("element.click", event => {
+  render: (viewer) => {
+    viewer.get("eventBus").on("element.click", (event) => {
       if (event.element.type.includes("Task")) {
         cb(event.element);
       } else {
         cb(false);
       }
     });
-  }
+  },
 };
 
-const tabPlugin = {
+const cockpitTabPlugin = {
   id: "Angular9 Plugin",
-  pluginPoint: "cockpit.processDefinition.runtime.tab",  
+  pluginPoint: "cockpit.processDefinition.runtime.tab",
   priority: 5,
-  render: (container, { processDefinitionId }) => {
-    container.innerHTML = `<activity-table id="myActivityTable" process-definition-id="${processDefinitionId}"></activity-table>`;
-    cb = el => {
+  render: (container, { taskId }) => {
+    container.innerHTML = `
+    <activity-table id="myActivityTable" taskid="${taskId}"></activity-table>`;
+    cb = (el) => {
       if (el.id)
         document
           .getElementById("myActivityTable")
@@ -49,8 +50,18 @@ const tabPlugin = {
     };
   },
   properties: {
-    label: "Open User Tasks"
-  }
+    label: "Open User Tasks",
+  },
 };
 
-export default [tabPlugin, diagramPlugin];
+const tasklistTabPlugin = {
+  id: "tasklist.taskHistory",
+  pluginPoint: "tasklist.task.detail",
+  priority: 9001,
+  render: cockpitTabPlugin.render,
+  properties: {
+    label: "Task history",
+  },
+};
+
+export default [cockpitTabPlugin, diagramPlugin, tasklistTabPlugin];

@@ -5,13 +5,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { ActivityTableComponent } from './activity-table/activity-table.component';
+import { HttpClientModule } from '@angular/common/http';
+import { DurationFormatPipe } from './duration-format.pipe';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @NgModule({
   declarations: [
     ActivityTableComponent,
+    DurationFormatPipe,
   ],
   imports: [
-    BrowserModule
+    NgxJsonViewerModule,
+    BrowserModule,
+    HttpClientModule
   ],
   entryComponents: [
     ActivityTableComponent

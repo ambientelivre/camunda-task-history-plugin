@@ -1,24 +1,21 @@
-<div>
-    <span *ngIf="!userOperationMap || !hasOperations">
-        No User Operations!
-    </span>
-    <table *ngIf="userOperationMap && hasOperations">
-        <thead>
-            <td>User</td>
-            <td>Activity ID</td>
-            <td>Open Task Count</td>
-        </thead>
-        <tbody>
-            <ng-container *ngFor="let user of userOperationMap | keyvalue">
-                <ng-container *ngFor="let activity of user.value | keyvalue">
-                    <tr>
-                        <td>{{user.key}}</td>
-                        <td>{{activity.key}}</td>
-                        <td>{{activity.value}}</td>
-                    </tr>
-                </ng-container>
-            </ng-container>
-        </tbody>
-    </table>
+<table
+  class="table table-hover cam-table"
+  *ngIf="taskProcessInstance$ | async as tpi"
+>
+  <tr>
+    <th>Tarefa</th>
+    <th>Assignee</th>
+    <th>Inicio</th>
+    <th>Fim</th>
+    <th>Duração</th>
+  </tr>
 
-</div>
+  <tr *ngFor="let t of tpi">
+    <td>{{ t.name }}</td>
+    <td>{{ t.assignee }}</td>
+    <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+    <td><ngx-json-viewer [json]="t.variable"></ngx-json-viewer></td>
+  </tr>
+</table>
