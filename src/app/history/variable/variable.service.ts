@@ -10,19 +10,11 @@ export class VariableService {
   constructor(private variableRepository: VariableRepository) {}
 
   #findManyVariable(params) {
-    return this.variableRepository
-      .findManyVariable({
-        ...params,
-        deserializeValues: false,
-        includeDeleted: true,
-      })
-      .pipe(
-        switchMap((variable) => from(variable)),
-        reduce(
-          (p, c) => ({ ...p, [c.name]: c }),
-          {} as Record<string, Variable>
-        )
-      );
+    return this.variableRepository.findManyVariable({
+      ...params,
+      deserializeValues: false,
+      includeDeleted: true,
+    });
   }
 
   findManyVariableByTaskId(params, ...taskId: string[]) {

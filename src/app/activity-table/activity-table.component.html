@@ -9,20 +9,42 @@
         <th>Duração</th>
       </tr>
 
-      <tr *ngFor="let t of t">
-        <td>{{ t.name }}</td>
-        <td>{{ t.assignee }}</td>
-        <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-        <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-        <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
-      </tr>
+      <ng-container *ngFor="let t of t">
+        <tr *ngIf="t.detail.length > 0">
+          <td>{{ t.name }}</td>
+          <td>{{ t.assignee }}</td>
+          <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+          <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+          <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+        </tr>
+
+        <tr *ngFor="let d of t.detail">
+          <table class="table table-hover table-bordered cam-table">
+            <tr>
+              <th>Ação</th>
+              <th>Variavel</th>
+              <th>Valor</th>
+              <th>Criação</th>
+              <th>Remoção</th>
+            </tr>
+
+            <tr>
+              <td>{{ d.type }}</td>
+              <td>{{ d.variableName || d.fieldId }}</td>
+              <td>{{ d.value || d.fieldValue }}</td>
+              <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
+              <td>{{ d.removalTime }}</td>
+            </tr>
+          </table>
+        </tr>
+      </ng-container>
     </table>
   </div>
 
   <div class="col-md-6" *ngIf="variableCreation$ | async as v">
     <table
       class="table table-hover table-bordered cam-table"
-      *ngIf="!variableIsEmpty(v)"
+      *ngIf="v.length > 0"
     >
       <tr>
         <th>Variavel</th>
@@ -32,23 +54,23 @@
         <th>Remoção</th>
       </tr>
 
-      <tr *ngFor="let v of v | keyvalue">
-        <td>{{ v.key }}</td>
+      <tr *ngFor="let v of v">
+        <td>{{ v.name }}</td>
         <td>
-          <ng-container *ngIf="v.value.type !== 'JSON'" ; jsonType>
-            {{ v.value.value }}
+          <ng-container *ngIf="v.type !== 'JSON'" ; jsonType>
+            {{ v.value }}
           </ng-container>
 
           <ng-template #jsonType>
             <ngx-json-viewer
               [expanded]="false"
-              [json]="v.value.value"
+              [json]="v.value"
             ></ngx-json-viewer>
           </ng-template>
         </td>
-        <td>{{ v.value.state }}</td>
-        <td>{{ v.value.createTime | date : "M/d/yy, h:mm:ss" }}</td>
-        <td>{{ v.value.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ v.state }}</td>
+        <td>{{ v.createTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ v.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
       </tr>
     </table>
   </div>
