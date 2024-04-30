@@ -2,7 +2,7 @@ export interface Variable {
   id: string;
   name: string;
   type: string;
-  value: string;
+  value: any;
   valueInfo: ValueInfo;
   processDefinitionKey: string;
   processDefinitionId: string;

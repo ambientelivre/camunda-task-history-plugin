@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { from, reduce, switchMap } from "rxjs";
 import { VariableRepository } from "./variable.repository";
+import { Variable } from "./variable";
 
 @Injectable({
   providedIn: "root",
@@ -13,21 +14,18 @@ export class VariableService {
       .findManyVariable({
         ...params,
         deserializeValues: false,
+        includeDeleted: true,
       })
       .pipe(
         switchMap((variable) => from(variable)),
         reduce(
-          (p, c) => ({ ...p, [c.name]: c.value }),
-          {} as Record<string, any>
+          (p, c) => ({ ...p, [c.name]: c }),
+          {} as Record<string, Variable>
         )
       );
   }
 
-  findOneVariableByTaskId(taskIdIn: string) {
-    return this.#findManyVariable({ taskIdIn, maxResults: 1 });
-  }
-
-  findManyVariableByTaskId(...taskIdIn: string[]) {
-    return this.#findManyVariable({ taskIdIn });
+  findManyVariableByTaskId(params, ...taskId: string[]) {
+    return this.#findManyVariable({ ...params, taskId });
   }
 }

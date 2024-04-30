@@ -8,23 +8,13 @@ import { map } from "rxjs";
 export class TaskService {
   constructor(private taskRepository: TaskRepository) {}
 
-  #findManyTask(params) {
-    return this.taskRepository.findManyTask(params);
-  }
-
   findOneTaskById(taskId: string) {
-    return this.#findManyTask({ taskId }).pipe(map(([task]) => task));
+    return this.taskRepository
+      .findManyTask({ taskId, maxResults: 1 })
+      .pipe(map(([task]) => task));
   }
 
-  findManyTaskByProcessIntanceId(processInstanceId: string) {
-    return this.#findManyTask({ processInstanceId });
-  }
-
-  findManyTaskByProcessIntanceIdSortByStartDesc(processInstanceId: string) {
-    return this.#findManyTask({
-      processInstanceId,
-      sortBy: "startTime",
-      sortOrder: "desc",
-    });
+  findManyTask(params) {
+    return this.taskRepository.findManyTask(params);
   }
 }

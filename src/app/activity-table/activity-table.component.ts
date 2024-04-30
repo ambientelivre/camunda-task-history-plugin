@@ -11,6 +11,7 @@ import {
 import { Task } from "../history/task/task";
 import { TaskService } from "../history/task/task.service";
 import { VariableService } from "../history/variable/variable.service";
+import { Variable } from "../history/variable/variable";
 
 @Component({
   selector: "custom-activity-table",
@@ -21,7 +22,7 @@ export class ActivityTableComponent implements OnInit {
   keys = Object.keys;
   task$!: Observable<Task>;
   taskProcessInstance$: Observable<
-    (Task & { variable: Record<string, any> })[]
+    (Task & { variable: Record<string, Variable> })[]
   >;
 
   @Input()
@@ -32,7 +33,7 @@ export class ActivityTableComponent implements OnInit {
     private variableService: VariableService
   ) {}
 
-  variableIsEmpty(variable: Record<string, any>) {
+  variableIsEmpty(variable: Record<string, Variable>) {
     return Object.keys(variable).length === 0;
   }
 
@@ -43,12 +44,16 @@ export class ActivityTableComponent implements OnInit {
         timer(0, 60_000).pipe(
           switchMap(() =>
             this.taskService
-              .findManyTaskByProcessIntanceIdSortByStartDesc(processInstanceId)
+              .findManyTask({
+                processInstanceId,
+                sortBy: "startTime",
+                sortOrder: "desc",
+              })
               .pipe(
                 switchMap((task) => from(task)),
                 mergeMap((task) =>
                   this.variableService
-                    .findOneVariableByTaskId(task.id)
+                    .findManyVariableByTaskId({ processInstanceId }, task.id)
                     .pipe(map((variable) => ({ ...task, variable })))
                 ),
                 toArray()

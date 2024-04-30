@@ -1,8 +1,9 @@
 table td,
 th {
   padding: 0.5em;
+  word-break: break-all;
 }
 
-table tr.cell {
-    border-bottom: 1px solid #ddd;
+.table-row {
+  border-bottom: 1px solid #ddd;
 }
