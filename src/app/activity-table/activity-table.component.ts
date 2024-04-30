@@ -1,17 +1,13 @@
 import { Component, Input, OnInit } from "@angular/core";
 import {
   Observable,
-  from,
-  map,
-  mergeMap,
   switchMap,
-  timer,
-  toArray,
+  timer
 } from "rxjs";
 import { Task } from "../history/task/task";
 import { TaskService } from "../history/task/task.service";
-import { VariableService } from "../history/variable/variable.service";
 import { Variable } from "../history/variable/variable";
+import { VariableService } from "../history/variable/variable.service";
 
 @Component({
   selector: "custom-activity-table",
@@ -21,9 +17,8 @@ import { Variable } from "../history/variable/variable";
 export class ActivityTableComponent implements OnInit {
   keys = Object.keys;
   task$!: Observable<Task>;
-  taskProcessInstance$: Observable<
-    (Task & { variable: Record<string, Variable> })[]
-  >;
+  taskProcessInstance$: Observable<Task[]>;
+  variableCreation$: Observable<Record<string, Variable>>;
 
   @Input()
   taskid!: string;
@@ -43,23 +38,18 @@ export class ActivityTableComponent implements OnInit {
       switchMap(({ processInstanceId }) =>
         timer(0, 60_000).pipe(
           switchMap(() =>
-            this.taskService
-              .findManyTask({
-                processInstanceId,
-                sortBy: "startTime",
-                sortOrder: "desc",
-              })
-              .pipe(
-                switchMap((task) => from(task)),
-                mergeMap((task) =>
-                  this.variableService
-                    .findManyVariableByTaskId({ processInstanceId }, task.id)
-                    .pipe(map((variable) => ({ ...task, variable })))
-                ),
-                toArray()
-              )
+            this.taskService.findManyTask({
+              processInstanceId,
+              sortBy: "startTime",
+              sortOrder: "desc",
+            })
           )
         )
+      )
+    );
+    this.variableCreation$ = this.task$.pipe(
+      switchMap(({ processInstanceId }) =>
+        this.variableService.findManyVariableByTaskId({ processInstanceId })
       )
     );
   }

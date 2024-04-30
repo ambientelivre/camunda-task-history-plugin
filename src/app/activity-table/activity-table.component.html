@@ -1,56 +1,57 @@
-<table
-  class="table table-hover table-bordered cam-table"
-  *ngIf="taskProcessInstance$ | async as tp"
->
-  <tr class="table-cell">
-    <th>Tarefa</th>
-    <th>Assignee</th>
-    <th>Inicio</th>
-    <th>Fim</th>
-    <th>Duração</th>
-  </tr>
+<div class="row">
+  <div class="col-md-6" *ngIf="taskProcessInstance$ | async as t">
+    <table class="table table-hover table-bordered cam-table">
+      <tr>
+        <th>Tarefa</th>
+        <th>Assignee</th>
+        <th>Inicio</th>
+        <th>Fim</th>
+        <th>Duração</th>
+      </tr>
 
-  <ng-container *ngFor="let t of tp">
-    <tr class="table-row">
-      <td>{{ t.name }}</td>
-      <td>{{ t.assignee }}</td>
-      <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-      <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-      <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
-    </tr>
+      <tr *ngFor="let t of t">
+        <td>{{ t.name }}</td>
+        <td>{{ t.assignee }}</td>
+        <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+      </tr>
+    </table>
+  </div>
 
-    <tr class="table-row">
-      <table *ngIf="!variableIsEmpty(t.variable)">
-        <tr>
-          <th>Variavel</th>
-          <th>Valor</th>
-          <th>Ação</th>
-          <th>Criação</th>
-          <th>Remoção</th>
-        </tr>
+  <div class="col-md-6" *ngIf="variableCreation$ | async as v">
+    <table
+      class="table table-hover table-bordered cam-table"
+      *ngIf="!variableIsEmpty(v)"
+    >
+      <tr>
+        <th>Variavel</th>
+        <th>Valor</th>
+        <th>Ação</th>
+        <th>Criação</th>
+        <th>Remoção</th>
+      </tr>
 
-        <tr *ngFor="let v of t.variable | keyvalue">
-          <td>{{ v.key }}</td>
-          <td>
-            <ng-container *ngIf="v.value.type !== 'JSON'" ; jsonType>
-              {{ v.value.value }}
-            </ng-container>
+      <tr *ngFor="let v of v | keyvalue">
+        <td>{{ v.key }}</td>
+        <td>
+          <ng-container *ngIf="v.value.type !== 'JSON'" ; jsonType>
+            {{ v.value.value }}
+          </ng-container>
 
-            <ng-template #jsonType>
-              <ngx-json-viewer
-                [expanded]="false"
-                [json]="t.variable"
-              ></ngx-json-viewer>
-            </ng-template>
-          </td>
+          <ng-template #jsonType>
+            <ngx-json-viewer
+              [expanded]="false"
+              [json]="v.value.value"
+            ></ngx-json-viewer>
+          </ng-template>
+        </td>
+        <td>{{ v.value.state }}</td>
+        <td>{{ v.value.createTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ v.value.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
 
-          <td>{{ v.value.state }}</td>
-          <td>{{ v.value.createTime | date : "M/d/yy, h:mm:ss" }}</td>
-          <td>{{ v.value.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
-        </tr>
-      </table>
-    </tr>
-
-    <ng-template #emptyVariable>Tarefa não contem variaveis.</ng-template>
-  </ng-container>
-</table>
+<ng-template #emptyVariable>Tarefa não contem variaveis.</ng-template>
