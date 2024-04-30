@@ -32,6 +32,10 @@ export class ActivityTableComponent implements OnInit {
     private variableService: VariableService
   ) {}
 
+  variableIsEmpty(variable: Record<string, any>) {
+    return Object.keys(variable).length === 0;
+  }
+
   ngOnInit(): void {
     this.task$ = this.taskService.findOneTaskById(this.taskid);
     this.taskProcessInstance$ = this.task$.pipe(

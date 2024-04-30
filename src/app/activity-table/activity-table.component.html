@@ -1,8 +1,5 @@
-<table
-  class="table table-hover cam-table"
-  *ngIf="taskProcessInstance$ | async as tpi"
->
-  <tr>
+<table class="table table-hover table-bordered cam-table" *ngIf="taskProcessInstance$ | async as tp">
+  <tr class="cell">
     <th>Tarefa</th>
     <th>Assignee</th>
     <th>Inicio</th>
@@ -10,12 +7,21 @@
     <th>Duração</th>
   </tr>
 
-  <tr *ngFor="let t of tpi">
-    <td>{{ t.name }}</td>
-    <td>{{ t.assignee }}</td>
-    <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
-    <td><ngx-json-viewer [json]="t.variable"></ngx-json-viewer></td>
-  </tr>
+  <ng-container *ngFor="let t of tp">
+    <tr>
+      <td>{{ t.name }}</td>
+      <td>{{ t.assignee }}</td>
+      <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+    </tr>
+
+    <tr class="cell">
+      <td>
+        <ngx-json-viewer *ngIf="!variableIsEmpty(t.variable); else emptyVariable" [json]="t.variable"></ngx-json-viewer>
+        <ng-template #emptyVariable> Tarefa não contem variaveis.</ng-template>
+      </td>
+    </tr>
+
+  </ng-container>
 </table>
