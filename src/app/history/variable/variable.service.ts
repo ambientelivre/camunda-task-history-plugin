@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
-import { from, reduce, switchMap } from "rxjs";
 import { VariableRepository } from "./variable.repository";
-import { Variable } from "./variable";
 
 @Injectable({
   providedIn: "root",
