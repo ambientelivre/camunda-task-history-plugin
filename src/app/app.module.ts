@@ -1,21 +1,18 @@
 import { Injector } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
-
-import { BrowserModule } from "@angular/platform-browser";
+import { TabsModule } from "ngx-bootstrap/tabs";
 import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
-import { ActivityTableComponent } from "./activity-table/activity-table.component";
 import { HttpClientModule } from "@angular/common/http";
-import { DurationFormatPipe } from "./duration-format.pipe";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
+import { ActivityTableComponent } from "./activity-table/activity-table.component";
+import { DurationFormatPipe } from "./duration-format.pipe";
 
 @NgModule({
+  schemas: [],
   declarations: [ActivityTableComponent, DurationFormatPipe],
-  imports: [
-    NgxJsonViewerModule,
-    BrowserModule,
-    HttpClientModule
-  ],
+  imports: [NgxJsonViewerModule, TabsModule, BrowserModule, HttpClientModule],
   entryComponents: [ActivityTableComponent],
 })
 export class AppModule {

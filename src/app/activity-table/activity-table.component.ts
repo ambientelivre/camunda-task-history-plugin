@@ -1,19 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
-import {
-  Observable,
-  from,
-  map,
-  mergeMap,
-  switchMap,
-  timer,
-  toArray,
-} from "rxjs";
+import { setTheme } from "ngx-bootstrap/utils";
+import { Observable, from, map, mergeMap, switchMap, toArray } from "rxjs";
+import { Detail } from "../history/process-instance/detail/detail";
+import { DetailService } from "../history/process-instance/detail/detail.service";
 import { Task } from "../history/task/task";
 import { TaskService } from "../history/task/task.service";
 import { Variable } from "../history/variable/variable";
 import { VariableService } from "../history/variable/variable.service";
-import { Detail } from "../history/process-instance/detail/detail";
-import { DetailService } from "../history/process-instance/detail/detail.service";
 
 @Component({
   selector: "custom-activity-table",
@@ -21,7 +14,6 @@ import { DetailService } from "../history/process-instance/detail/detail.service
   styleUrls: ["./activity-table.component.css"],
 })
 export class ActivityTableComponent implements OnInit {
-  refreshInterval$ = timer(0, 60_000);
   task$: Observable<Task>;
   taskProcessInstance$: Observable<(Task & { detail: Detail[] })[]>;
   variableCreation$: Observable<Variable[]>;
@@ -33,40 +25,34 @@ export class ActivityTableComponent implements OnInit {
     private taskService: TaskService,
     private variableService: VariableService,
     private detailService: DetailService
-  ) {}
+  ) {
+    setTheme("bs3");
+  }
 
   ngOnInit(): void {
     this.task$ = this.taskService.findOneTaskById(this.taskid);
     this.taskProcessInstance$ = this.task$.pipe(
       switchMap(({ processInstanceId }) =>
-        this.refreshInterval$.pipe(
-          switchMap(() =>
-            this.taskService
-              .findManyTask({
-                processInstanceId,
-                sortBy: "startTime",
-                sortOrder: "desc",
-              })
-              .pipe(
-                switchMap((task) => from(task)),
-                mergeMap((task) =>
-                  this.detailService
-                    .findManyProcessInstanceDetail({ taskId: task.id })
-                    .pipe(map((detail) => ({ ...task, detail })))
-                ),
-                toArray()
-              )
+        this.taskService
+          .findManyTask({
+            processInstanceId,
+            sortBy: "startTime",
+            sortOrder: "desc",
+          })
+          .pipe(
+            switchMap((task) => from(task)),
+            mergeMap((task) =>
+              this.detailService
+                .findManyProcessInstanceDetail({ taskId: task.id })
+                .pipe(map((detail) => ({ ...task, detail })))
+            ),
+            toArray()
           )
-        )
       )
     );
     this.variableCreation$ = this.task$.pipe(
       switchMap(({ processInstanceId }) =>
-        this.refreshInterval$.pipe(
-          switchMap(() =>
-            this.variableService.findManyVariableByTaskId({ processInstanceId })
-          )
-        )
+        this.variableService.findManyVariableByTaskId({ processInstanceId })
       )
     );
   }
