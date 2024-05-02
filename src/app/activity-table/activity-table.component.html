@@ -2,90 +2,94 @@
 
 <tabset>
   <tab heading="Tarefas">
-    <table
-      *ngIf="taskProcessInstance$ | async as t"
-      class="table table-hover table-bordered"
-    >
-      <thead>
-        <tr>
-          <th>Tarefa</th>
-          <th>Assignee</th>
-          <th>Inicio</th>
-          <th>Fim</th>
-          <th>Duração</th>
-          <th>Eventos</th>
-        </tr>
-      </thead>
+    <div class="table-responsive">
+      <table
+        *ngIf="taskProcessInstance$ | async as t"
+        class="table table-hover table-bordered"
+      >
+        <thead>
+          <tr>
+            <th>Tarefa</th>
+            <th>Assignee</th>
+            <th>Inicio</th>
+            <th>Fim</th>
+            <th>Duração</th>
+            <th>Eventos</th>
+          </tr>
+        </thead>
 
-      <tbody *ngFor="let t of t">
-        <tr>
-          <td>{{ t.name }}</td>
-          <td>{{ t.assignee }}</td>
-          <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-          <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-          <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
-          <td>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Ação</th>
-                  <th>Variavel</th>
-                  <th>Valor</th>
-                  <th>Criação</th>
-                  <th>Remoção</th>
-                </tr>
-              </thead>
+        <tbody *ngFor="let t of t">
+          <tr>
+            <td>{{ t.name }}</td>
+            <td>{{ t.assignee }}</td>
+            <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+            <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+            <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+            <td>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Ação</th>
+                    <th>Variavel</th>
+                    <th>Valor</th>
+                    <th>Criação</th>
+                    <th>Remoção</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                <tr *ngFor="let d of t.detail">
-                  <td>{{ d.type }}</td>
-                  <td>{{ d.variableName || d.fieldId }}</td>
-                  <td>
-                    <ngx-json-viewer
-                      [expanded]="false"
-                      [json]="d.value || d.fieldValue"
-                    ></ngx-json-viewer>
-                  </td>
-                  <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
-                  <td>{{ d.removalTime }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                <tbody>
+                  <tr *ngFor="let d of t.detail">
+                    <td>{{ d.type }}</td>
+                    <td>{{ d.variableName || d.fieldId }}</td>
+                    <td>
+                      <ngx-json-viewer
+                        [expanded]="false"
+                        [json]="d.value || d.fieldValue"
+                      ></ngx-json-viewer>
+                    </td>
+                    <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
+                    <td>{{ d.removalTime }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </tab>
 
   <tab heading="Variaveis">
-    <table
-      *ngIf="variableCreation$ | async as v"
-      class="table table-hover table-bordered"
-    >
-      <thead>
-        <tr>
-          <th>Variavel</th>
-          <th>Valor</th>
-          <th>Ação</th>
-          <th>Criação</th>
-          <th>Remoção</th>
-        </tr>
-      </thead>
+    <div class="table-responsive">
+      <table
+        *ngIf="variableCreation$ | async as v"
+        class="table table-hover table-bordered"
+      >
+        <thead>
+          <tr>
+            <th>Variavel</th>
+            <th>Valor</th>
+            <th>Ação</th>
+            <th>Criação</th>
+            <th>Remoção</th>
+          </tr>
+        </thead>
 
-      <tbody *ngIf="v.length > 0">
-        <tr *ngFor="let v of v">
-          <td>{{ v.name }}</td>
-          <td>
-            <ngx-json-viewer
-              [expanded]="false"
-              [json]="v.value"
-            ></ngx-json-viewer>
-          </td>
-          <td>{{ v.state }}</td>
-          <td>{{ v.createTime | date : "M/d/yy, h:mm:ss" }}</td>
-          <td>{{ v.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody *ngIf="v.length > 0">
+          <tr *ngFor="let v of v">
+            <td>{{ v.name }}</td>
+            <td>
+              <ngx-json-viewer
+                [expanded]="false"
+                [json]="v.value"
+              ></ngx-json-viewer>
+            </td>
+            <td>{{ v.state }}</td>
+            <td>{{ v.createTime | date : "M/d/yy, h:mm:ss" }}</td>
+            <td>{{ v.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </tab>
 </tabset>
