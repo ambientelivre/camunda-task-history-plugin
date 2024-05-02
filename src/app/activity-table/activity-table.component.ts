@@ -22,7 +22,7 @@ import { DetailService } from "../history/process-instance/detail/detail.service
 })
 export class ActivityTableComponent implements OnInit {
   refreshInterval$ = timer(0, 60_000);
-  task$!: Observable<Task>;
+  task$: Observable<Task>;
   taskProcessInstance$: Observable<(Task & { detail: Detail[] })[]>;
   variableCreation$: Observable<Variable[]>;
 
@@ -32,14 +32,14 @@ export class ActivityTableComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private variableService: VariableService,
-    private detailSerivce: DetailService
+    private detailService: DetailService
   ) {}
 
   ngOnInit(): void {
     this.task$ = this.taskService.findOneTaskById(this.taskid);
     this.taskProcessInstance$ = this.task$.pipe(
       switchMap(({ processInstanceId }) =>
-        timer(0, 60_000).pipe(
+        this.refreshInterval$.pipe(
           switchMap(() =>
             this.taskService
               .findManyTask({
@@ -50,7 +50,7 @@ export class ActivityTableComponent implements OnInit {
               .pipe(
                 switchMap((task) => from(task)),
                 mergeMap((task) =>
-                  this.detailSerivce
+                  this.detailService
                     .findManyProcessInstanceDetail({ taskId: task.id })
                     .pipe(map((detail) => ({ ...task, detail })))
                 ),
