@@ -9,6 +9,8 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   findOneUserById(id: string) {
-    return this.userRepository.findManyUser({ id }).pipe(map(([user]) => user));
+    return this.userRepository
+      .findManyUser({ id, maxResults: 1 })
+      .pipe(map(([user]) => user));
   }
 }
