@@ -1,0 +1,32 @@
+<ng-template #header>
+  <tr>
+    <th>Tarefa</th>
+    <th>Assignee</th>
+    <th>Inicio</th>
+    <th>Fim</th>
+    <th>Duração</th>
+    <th>Eventos</th>
+  </tr>
+</ng-template>
+
+<ng-template #body>
+  <tr *ngFor="let t of taskProcessInstanceDetail$ | async">
+    <td>{{ t.name }}</td>
+    <td>
+      <div class="flex gap-3">
+        {{ t.assignee
+        }}<b *ngIf="t.user as u" class="flex gap-3"
+          >{{ u.firstName }} {{ u.lastName }}</b
+        >
+      </div>
+    </td>
+    <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+    <td class="p-0">
+      <custom-history-table [history]="t.history"></custom-history-table>
+    </td>
+  </tr>
+</ng-template>
+
+<custom-table [thead]="header" [tbody]="body"></custom-table>

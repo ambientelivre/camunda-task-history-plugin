@@ -1,0 +1,23 @@
+<ng-template #header>
+  <tr>
+    <th>Ação</th>
+    <th>Variavel</th>
+    <th>Valor</th>
+    <th>Criação</th>
+    <th>Remoção</th>
+  </tr>
+</ng-template>
+
+<ng-template #body>
+  <tr *ngFor="let d of history">
+    <td>{{ d.type }}</td>
+    <td>{{ d.key }}</td>
+    <td>
+      <ngx-json-viewer [expanded]="false" [json]="d.value"></ngx-json-viewer>
+    </td>
+    <td>{{ d.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ d.endTime }}</td>
+  </tr>
+</ng-template>
+
+<custom-table [thead]="header" [tbody]="body"></custom-table>
