@@ -9,6 +9,31 @@
   </tr>
 </ng-template>
 
+<ng-template #processDetailTableHeader>
+  <tr>
+    <th>Ação</th>
+    <th>Variavel</th>
+    <th>Valor</th>
+    <th>Criação</th>
+    <th>Remoção</th>
+  </tr>
+</ng-template>
+
+<ng-template #processDetailTableBody>
+  <tr *ngFor="let d of processInstanceDetail$ | async">
+    <td>{{ d.type }}</td>
+    <td>{{ d.variableName || d.fieldId }}</td>
+    <td>
+      <ngx-json-viewer
+        [expanded]="false"
+        [json]="d.value || d.fieldValue"
+      ></ngx-json-viewer>
+    </td>
+    <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ d.removalTime }}</td>
+  </tr>
+</ng-template>
+
 <ng-template #taskTableBody>
   <tr *ngFor="let t of taskProcessInstance$ | async">
     <td>{{ t.name }}</td>
@@ -19,13 +44,9 @@
     <td class="p-0">
       <table class="table">
         <thead>
-          <tr>
-            <th>Ação</th>
-            <th>Variavel</th>
-            <th>Valor</th>
-            <th>Criação</th>
-            <th>Remoção</th>
-          </tr>
+          <ng-template
+            *ngTemplateOutlet="processDetailTableHeader"
+          ></ng-template>
         </thead>
 
         <tbody>
@@ -44,31 +65,6 @@
         </tbody>
       </table>
     </td>
-  </tr>
-</ng-template>
-
-<ng-template #processTableHeader>
-  <tr>
-    <th>Ação</th>
-    <th>Variavel</th>
-    <th>Valor</th>
-    <th>Criação</th>
-    <th>Remoção</th>
-  </tr>
-</ng-template>
-
-<ng-template #processTableBody>
-  <tr *ngFor="let d of processInstanceDetail$ | async">
-    <td>{{ d.type }}</td>
-    <td>{{ d.variableName || d.fieldId }}</td>
-    <td>
-      <ngx-json-viewer
-        [expanded]="false"
-        [json]="d.value || d.fieldValue"
-      ></ngx-json-viewer>
-    </td>
-    <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ d.removalTime }}</td>
   </tr>
 </ng-template>
 
@@ -104,8 +100,8 @@
 
   <tab heading="Processo">
     <custom-table
-      [thead]="processTableHeader"
-      [tbody]="processTableBody"
+      [thead]="processDetailTableHeader"
+      [tbody]="processDetailTableBody"
     ></custom-table>
   </tab>
 
