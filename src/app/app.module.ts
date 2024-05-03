@@ -8,10 +8,11 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { ActivityTableComponent } from "./activity-table/activity-table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   schemas: [],
-  declarations: [ActivityTableComponent, DurationFormatPipe],
+  declarations: [ActivityTableComponent, DurationFormatPipe, TableComponent],
   imports: [NgxJsonViewerModule, TabsModule, BrowserModule, HttpClientModule],
   entryComponents: [ActivityTableComponent],
 })

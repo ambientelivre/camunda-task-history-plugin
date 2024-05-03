@@ -17,6 +17,7 @@ export class ActivityTableComponent implements OnInit {
   task$: Observable<Task>;
   taskProcessInstance$: Observable<(Task & { detail: Detail[] })[]>;
   variableCreation$: Observable<Variable[]>;
+  processInstanceDetail$: Observable<Detail[]>;
 
   @Input()
   taskid!: string;
@@ -48,6 +49,11 @@ export class ActivityTableComponent implements OnInit {
             ),
             toArray()
           )
+      )
+    );
+    this.processInstanceDetail$ = this.task$.pipe(
+      switchMap(({ processInstanceId }) =>
+        this.detailService.findManyProcessInstanceDetail({ processInstanceId })
       )
     );
     this.variableCreation$ = this.task$.pipe(
