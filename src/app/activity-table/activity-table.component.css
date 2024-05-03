@@ -1,3 +1,11 @@
 .p-0 {
-    padding: 0 !important;
+  padding: 0 !important;
+}
+
+.gap-3 {
+  gap: 1em !important;
+}
+
+.flex {
+  display: flex !important;
 }

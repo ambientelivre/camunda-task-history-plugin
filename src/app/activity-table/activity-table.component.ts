@@ -1,12 +1,24 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { setTheme } from "ngx-bootstrap/utils";
-import { Observable, from, map, mergeMap, switchMap, toArray } from "rxjs";
+import {
+  Observable,
+  forkJoin,
+  from,
+  map,
+  mergeMap,
+  of,
+  shareReplay,
+  switchMap,
+  toArray
+} from "rxjs";
 import { Detail } from "../history/process-instance/detail/detail";
 import { DetailService } from "../history/process-instance/detail/detail.service";
 import { Task } from "../history/task/task";
 import { TaskService } from "../history/task/task.service";
 import { Variable } from "../history/variable/variable";
 import { VariableService } from "../history/variable/variable.service";
+import { User } from "../user/user";
+import { UserService } from "../user/user.service";
 
 @Component({
   selector: "custom-activity-table",
@@ -15,7 +27,7 @@ import { VariableService } from "../history/variable/variable.service";
 })
 export class ActivityTableComponent implements OnInit {
   task$: Observable<Task>;
-  taskProcessInstance$: Observable<(Task & { detail: Detail[] })[]>;
+  taskProcessInstance$: Observable<(Task & { detail: Detail[]; user: User })[]>;
   variableCreation$: Observable<Variable[]>;
   processInstanceDetail$: Observable<Detail[]>;
 
@@ -25,13 +37,16 @@ export class ActivityTableComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private variableService: VariableService,
-    private detailService: DetailService
+    private detailService: DetailService,
+    private userService: UserService
   ) {
     setTheme("bs3");
   }
 
   ngOnInit(): void {
-    this.task$ = this.taskService.findOneTaskById(this.taskid);
+    this.task$ = this.taskService
+      .findOneTaskById(this.taskid)
+      .pipe(shareReplay(1));
     this.taskProcessInstance$ = this.task$.pipe(
       switchMap(({ processInstanceId }) =>
         this.taskService
@@ -43,9 +58,14 @@ export class ActivityTableComponent implements OnInit {
           .pipe(
             switchMap((task) => from(task)),
             mergeMap((task) =>
-              this.detailService
-                .findManyProcessInstanceDetail({ taskId: task.id })
-                .pipe(map((detail) => ({ ...task, detail })))
+              forkJoin([
+                this.detailService.findManyProcessInstanceDetail({
+                  activityInstanceId: task.activityInstanceId,
+                }),
+                task.assignee
+                  ? this.userService.findOneUserById(task.assignee)
+                  : of(null),
+              ]).pipe(map(([detail, user]) => ({ ...task, detail, user })))
             ),
             toArray()
           )

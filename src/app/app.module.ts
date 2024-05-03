@@ -1,19 +1,25 @@
-import { Injector } from "@angular/core";
+import { Injector, NgModule } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
-import { TabsModule } from "ngx-bootstrap/tabs";
-import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { TabsModule } from "ngx-bootstrap/tabs";
 
 import { HttpClientModule } from "@angular/common/http";
+import { NgHttpCachingModule } from "ng-http-caching";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { ActivityTableComponent } from "./activity-table/activity-table.component";
+import { TableComponent } from "./components/table/table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
-import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   schemas: [],
   declarations: [ActivityTableComponent, DurationFormatPipe, TableComponent],
-  imports: [NgxJsonViewerModule, TabsModule, BrowserModule, HttpClientModule],
+  imports: [
+    NgxJsonViewerModule,
+    TabsModule,
+    BrowserModule,
+    HttpClientModule,
+    NgHttpCachingModule.forRoot({ lifetime: 1000 * 60 }),
+  ],
   entryComponents: [ActivityTableComponent],
 })
 export class AppModule {

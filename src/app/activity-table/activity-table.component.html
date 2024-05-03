@@ -37,7 +37,14 @@
 <ng-template #taskTableBody>
   <tr *ngFor="let t of taskProcessInstance$ | async">
     <td>{{ t.name }}</td>
-    <td>{{ t.assignee }}</td>
+    <td>
+      <div class="flex gap-3">
+        {{ t.assignee
+        }}<b *ngIf="t.user as u" class="flex gap-3"
+          >{{ u.firstName }} {{ u.lastName }}</b
+        >
+      </div>
+    </td>
     <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
