@@ -12,7 +12,9 @@
 
 <ng-template #body>
   <tr *ngFor="let t of taskProcessInstanceDetail$ | async; let i = index">
-    <td>{{ i }}</td>
+    <td>
+      <b>{{ i }}</b>
+    </td>
     <td>{{ t.name }}</td>
     <td>
       <div style="display: flex; gap: 1em">

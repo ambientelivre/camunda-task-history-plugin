@@ -3,7 +3,7 @@
     <th>#</th>
     <th>{{ "labels.ACTION" | translate }}</th>
     <th>{{ "labels.VARIABLE_NAME" | translate }}</th>
-    <th>{{ "labels.VARIABLE_TYPE" | translate }}</th>
+    <th>{{ "labels.VARIABLE_VALUE" | translate }}</th>
     <th>{{ "labels.CREATION_DATE" | translate }}</th>
     <th>{{ "labels.FINISHED" | translate }}</th>
   </tr>
@@ -11,7 +11,9 @@
 
 <ng-template #body>
   <tr *ngFor="let h of history; let i = index">
-    <td>{{ i }}</td>
+    <td>
+      <b>{{ i }}</b>
+    </td>
     <td>{{ h.type }}</td>
     <td>{{ h.key }}</td>
     <td>
@@ -32,7 +34,7 @@
       </ng-template>
     </td>
     <td>{{ h.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ h.endTime }}</td>
+    <td>{{ h.endTime | date : "M/d/yy, h:mm:ss" }}</td>
   </tr>
 </ng-template>
 
