@@ -45,11 +45,7 @@ export class ProcessTableComponent implements OnInit {
           )
         ),
         toArray(),
-        map((history) =>
-          history.sort(
-            ({ startTime: asc }, { startTime: desc }) =>
-              new Date(desc).getTime() - new Date(asc).getTime()
-          )
+        map(History.sortByStartTimeDesc
         )
       );
   }

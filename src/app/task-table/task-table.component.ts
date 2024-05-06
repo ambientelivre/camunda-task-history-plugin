@@ -40,33 +40,33 @@ export class TaskTableComponent implements OnInit {
       .findOneTaskById(this.taskid)
       .pipe(
         switchMap(({ processInstanceId }) =>
-          this.taskService
-            .findManyTask({
-              processInstanceId,
-              sortBy: "startTime",
-              sortOrder: "desc",
-            })
-            .pipe(
-              switchMap((task) => from(task)),
-              mergeMap((task) =>
-                forkJoin([
-                  this.detailService.findManyProcessInstanceDetail({
-                    processInstanceId,
-                    activityInstanceId: task.activityInstanceId,
-                  }),
-                  task.assignee
-                    ? this.userService.findOneUserById(task.assignee)
-                    : of(null),
-                ]).pipe(
-                  map(([detail, user]) => ({
-                    ...task,
-                    history: detail.map((detail) => History.fromDetail(detail)),
-                    user,
-                  }))
-                )
-              ),
-              toArray()
+          this.taskService.findManyTask({ processInstanceId }).pipe(
+            switchMap((task) => from(task)),
+            mergeMap((task) =>
+              forkJoin([
+                this.detailService.findManyProcessInstanceDetail({
+                  processInstanceId,
+                  activityInstanceId: task.activityInstanceId,
+                }),
+                task.assignee
+                  ? this.userService.findOneUserById(task.assignee)
+                  : of(null),
+              ]).pipe(
+                map(([detail, user]) => ({
+                  ...task,
+                  history: detail.map((detail) => History.fromDetail(detail)),
+                  user,
+                }))
+              )
+            ),
+            toArray(),
+            map((processInstanceDetail) =>
+              processInstanceDetail.sort(
+                ({ startTime: asc }, { startTime: desc }) =>
+                  new Date(desc).getTime() - new Date(asc).getTime()
+              )
             )
+          )
         )
       );
   }

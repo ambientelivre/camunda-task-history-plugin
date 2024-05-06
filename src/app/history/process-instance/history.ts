@@ -31,4 +31,11 @@ export class History {
       variable.removalTime
     );
   }
+
+  static sortByStartTimeDesc(history: History[]) {
+    return history.sort(
+      ({ startTime: asc }, { startTime: desc }) =>
+        new Date(desc).getTime() - new Date(asc).getTime()
+    );
+  }
 }
