@@ -13,17 +13,15 @@
   <tr *ngFor="let t of taskProcessInstanceDetail$ | async">
     <td>{{ t.name }}</td>
     <td>
-      <div class="flex gap-3">
+      <div style="display: flex; gap: 1em">
         {{ t.assignee
-        }}<b *ngIf="t.user as u" class="flex gap-3"
-          >{{ u.firstName }} {{ u.lastName }}</b
-        >
+        }}<b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
       </div>
     </td>
     <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
-    <td class="p-0">
+    <td style="padding: 0">
       <custom-history-table [history]="t.history"></custom-history-table>
     </td>
   </tr>
