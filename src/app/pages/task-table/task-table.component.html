@@ -1,5 +1,6 @@
 <ng-template #header>
   <tr>
+    <th>#</th>
     <th>{{ "labels.TASK" | translate }}</th>
     <th>{{ "labels.ASSIGNEE" | translate }}</th>
     <th>{{ "labels.CREATION_DATE" | translate }}</th>
@@ -10,7 +11,8 @@
 </ng-template>
 
 <ng-template #body>
-  <tr *ngFor="let t of taskProcessInstanceDetail$ | async">
+  <tr *ngFor="let t of taskProcessInstanceDetail$ | async; let i = index">
+    <td>{{ i }}</td>
     <td>{{ t.name }}</td>
     <td>
       <div style="display: flex; gap: 1em">

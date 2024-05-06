@@ -1,5 +1,6 @@
 <ng-template #header>
   <tr>
+    <th>#</th>
     <th>{{ "labels.ACTION" | translate }}</th>
     <th>{{ "labels.VARIABLE_NAME" | translate }}</th>
     <th>{{ "labels.VARIABLE_TYPE" | translate }}</th>
@@ -9,7 +10,8 @@
 </ng-template>
 
 <ng-template #body>
-  <tr *ngFor="let h of history">
+  <tr *ngFor="let h of history; let i = index">
+    <td>{{ i }}</td>
     <td>{{ h.type }}</td>
     <td>{{ h.key }}</td>
     <td>
