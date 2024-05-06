@@ -25,14 +25,9 @@
 
       <ng-template #jsonType>
         <ngx-json-viewer
+          *ngIf="h.value !== null"
           [expanded]="true"
-          [json]="
-            h.valueType === 'Json'
-              ? parse(h.value)
-              : h.value === null
-              ? undefined
-              : h.value
-          "
+          [json]="h.valueType === 'Json' ? parse(h.value) : h.value"
         ></ngx-json-viewer>
       </ng-template>
     </td>

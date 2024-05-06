@@ -22,9 +22,16 @@
     </td>
     <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ t.duration | durationFormat : "ms" : "hhmmss" }}</td>
+    <td>
+      <ng-container *ngIf="t.endTime">
+        {{ t.duration | durationFormat : "ms" : "hhmmss" }}</ng-container
+      >
+    </td>
     <td style="padding: 0">
-      <custom-history-table [history]="t.history"></custom-history-table>
+      <custom-history-table
+        *ngIf="t.history.length > 0"
+        [history]="t.history"
+      ></custom-history-table>
     </td>
   </tr>
 </ng-template>
