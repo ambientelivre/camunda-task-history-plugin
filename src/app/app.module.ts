@@ -1,15 +1,16 @@
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Injector, NgModule } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
 import { BrowserModule } from "@angular/platform-browser";
-
-import { HttpClientModule } from "@angular/common/http";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { NgHttpCachingModule } from "ng-http-caching";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
-import { TaskTableComponent } from "./pages/task-table/task-table.component";
+import { CamundaTranslateLoader } from "./camunda-translate-loader";
+import { HistoryTableComponent } from "./components/history-table/history-table.component";
 import { TableComponent } from "./components/table/table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
 import { ProcessTableComponent } from "./pages/process-table/process-table.component";
-import { HistoryTableComponent } from "./components/history-table/history-table.component";
+import { TaskTableComponent } from "./pages/task-table/task-table.component";
 
 @NgModule({
   schemas: [],
@@ -20,11 +21,20 @@ import { HistoryTableComponent } from "./components/history-table/history-table.
     TableComponent,
     HistoryTableComponent,
   ],
-  providers:[],
+  providers: [],
   imports: [
     NgxJsonViewerModule,
     BrowserModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      defaultLanguage: "en",
+      useDefaultLang: true,
+      loader: {
+        provide: TranslateLoader,
+        useClass: CamundaTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
     NgHttpCachingModule.forRoot({ lifetime: 5_000 }),
   ],
   entryComponents: [TaskTableComponent, ProcessTableComponent],

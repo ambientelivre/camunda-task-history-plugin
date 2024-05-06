@@ -1,10 +1,10 @@
 <ng-template #header>
   <tr>
-    <th>Ação</th>
-    <th>Variavel</th>
-    <th>Valor</th>
-    <th>Criação</th>
-    <th>Remoção</th>
+    <th>{{ "labels.ACTION" | translate }}</th>
+    <th>{{ "labels.VARIABLE_NAME" | translate }}</th>
+    <th>{{ "labels.VARIABLE_TYPE" | translate }}</th>
+    <th>{{ "labels.CREATION_DATE" | translate }}</th>
+    <th>{{ "labels.FINISHED" | translate }}</th>
   </tr>
 </ng-template>
 
@@ -18,7 +18,7 @@
         href="/camunda/api/engine/engine/default/variable-instance/{{
           h.id
         }}/data"
-        >Download</a
+        >{{ "labels.DOWNLOAD" | translate }}</a
       >
 
       <ng-template #jsonType>
