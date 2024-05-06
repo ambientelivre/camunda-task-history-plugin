@@ -11,9 +11,11 @@ export class History {
   ) {}
 
   static fromDetail(detail: Detail) {
+    const isVariable = typeof detail.variableName === "string";
+
     return new History(
-      detail?.variableName || detail.fieldId || "",
-      detail.value || detail.fieldValue || "",
+      isVariable ? detail.variableName : detail.fieldId,
+      isVariable ? detail.value : detail.fieldValue,
       detail.type,
       detail.time,
       detail.removalTime

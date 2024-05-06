@@ -20,11 +20,12 @@ import { HistoryTableComponent } from "./components/history-table/history-table.
     TableComponent,
     HistoryTableComponent,
   ],
+  providers:[],
   imports: [
     NgxJsonViewerModule,
     BrowserModule,
     HttpClientModule,
-    NgHttpCachingModule.forRoot({ lifetime: 1000 * 60 }),
+    NgHttpCachingModule.forRoot({ lifetime: 60_000 }),
   ],
   entryComponents: [TaskTableComponent, ProcessTableComponent],
 })

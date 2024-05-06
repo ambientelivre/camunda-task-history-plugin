@@ -1,16 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
-import {
-  Observable,
-  from,
-  map,
-  merge,
-  shareReplay,
-  switchMap,
-  toArray,
-} from "rxjs";
+import { Observable, from, map, merge, switchMap, toArray } from "rxjs";
 import { DetailService } from "../history/process-instance/detail/detail.service";
 import { History } from "../history/process-instance/history";
-import { Task } from "../history/process-instance/task/task";
 import { TaskService } from "../history/process-instance/task/task.service";
 import { VariableService } from "../history/process-instance/variable/variable.service";
 
@@ -20,7 +11,6 @@ import { VariableService } from "../history/process-instance/variable/variable.s
   styleUrls: ["./process-table.component.css"],
 })
 export class ProcessTableComponent implements OnInit {
-  task$: Observable<Task>;
   processInstanceDetail$: Observable<History[]>;
 
   @Input()
@@ -33,35 +23,34 @@ export class ProcessTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.task$ = this.taskService
+    this.processInstanceDetail$ = this.taskService
       .findOneTaskById(this.taskid)
-      .pipe(shareReplay(1));
-    this.processInstanceDetail$ = this.task$.pipe(
-      switchMap(({ processInstanceId }) =>
-        merge(
-          this.detailService
-            .findManyProcessInstanceDetail({
-              processInstanceId,
-            })
-            .pipe(
-              switchMap((details) => from(details)),
-              map((detail) => History.fromDetail(detail))
-            ),
-          this.variableService
-            .findManyVariableByTaskId({ processInstanceId })
-            .pipe(
-              switchMap((variable) => from(variable)),
-              map((variable) => History.fromVariable(variable))
-            )
+      .pipe(
+        switchMap(({ processInstanceId }) =>
+          merge(
+            this.detailService
+              .findManyProcessInstanceDetail({
+                processInstanceId,
+              })
+              .pipe(
+                switchMap((details) => from(details)),
+                map(History.fromDetail)
+              ),
+            this.variableService
+              .findManyVariableByTaskId({ processInstanceId })
+              .pipe(
+                switchMap((variable) => from(variable)),
+                map(History.fromVariable)
+              )
+          )
+        ),
+        toArray(),
+        map((history) =>
+          history.sort(
+            ({ startTime: asc }, { startTime: desc }) =>
+              new Date(desc).getTime() - new Date(asc).getTime()
+          )
         )
-      ),
-      toArray(),
-      map((history) =>
-        history.sort(
-          ({ startTime: asc }, { startTime: desc }) =>
-            new Date(desc).getTime() - new Date(asc).getTime()
-        )
-      )
-    );
+      );
   }
 }
