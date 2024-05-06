@@ -13,7 +13,10 @@
     <td>{{ d.type }}</td>
     <td>{{ d.key }}</td>
     <td>
-      <ngx-json-viewer [expanded]="false" [json]="d.value"></ngx-json-viewer>
+      <ngx-json-viewer
+        [expanded]="false"
+        [json]="d.value === null ? undefined : d.value"
+      ></ngx-json-viewer>
     </td>
     <td>{{ d.startTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ d.endTime }}</td>
