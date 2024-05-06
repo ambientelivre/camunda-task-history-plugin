@@ -9,17 +9,27 @@
 </ng-template>
 
 <ng-template #body>
-  <tr *ngFor="let d of history">
-    <td>{{ d.type }}</td>
-    <td>{{ d.key }}</td>
+  <tr *ngFor="let h of history">
+    <td>{{ h.type }}</td>
+    <td>{{ h.key }}</td>
     <td>
-      <ngx-json-viewer
-        [expanded]="false"
-        [json]="d.value === null ? undefined : d.value"
-      ></ngx-json-viewer>
+      <a
+        *ngIf="h.valueType === 'File'; else jsonType"
+        href="/camunda/api/engine/engine/default/variable-instance/{{
+          h.id
+        }}/data"
+        >Download</a
+      >
+
+      <ng-template #jsonType>
+        <ngx-json-viewer
+          [expanded]="false"
+          [json]="h.value === null ? undefined : h.value"
+        ></ngx-json-viewer>
+      </ng-template>
     </td>
-    <td>{{ d.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ d.endTime }}</td>
+    <td>{{ h.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+    <td>{{ h.endTime }}</td>
   </tr>
 </ng-template>
 

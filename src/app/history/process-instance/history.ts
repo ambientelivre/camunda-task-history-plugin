@@ -7,7 +7,9 @@ export class History {
     public value,
     public type: string,
     public startTime: Date | string,
-    public endTime: Date | string
+    public endTime: Date | string,
+    public id: string,
+    public valueType: string
   ) {}
 
   static fromDetail(detail: Detail) {
@@ -18,7 +20,9 @@ export class History {
       isVariable ? detail.value : detail.fieldValue,
       detail.type,
       detail.time,
-      detail.removalTime
+      detail.removalTime,
+      detail.variableInstanceId,
+      detail.variableType
     );
   }
 
@@ -28,7 +32,9 @@ export class History {
       variable.value,
       variable.state,
       variable.createTime,
-      variable.removalTime
+      variable.removalTime,
+      variable.id,
+      variable.type
     );
   }
 
