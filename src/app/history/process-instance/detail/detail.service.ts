@@ -10,7 +10,7 @@ export class DetailService {
   #findManyProcessInstanceDetail(params) {
     return this.detailRepository.findManyProcessInstanceDetail({
       ...params,
-      deserializeValues: true,
+      deserializeValues: false,
       formFields: false,
       variableUpdates: false,
       initial: false,

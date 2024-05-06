@@ -54,7 +54,7 @@ export class TaskTableComponent implements OnInit {
               ]).pipe(
                 map(([detail, user]) => ({
                   ...task,
-                  history: detail.map((detail) => History.fromDetail(detail)),
+                  history: detail.map(History.fromDetail),
                   user,
                 }))
               )

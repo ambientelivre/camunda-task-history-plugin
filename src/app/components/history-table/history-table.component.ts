@@ -7,6 +7,8 @@ import { History } from "../../history/process-instance/history";
   styleUrls: ["./history-table.component.css"],
 })
 export class HistoryTableComponent {
+  parse = JSON.parse;
+
   @Input()
   history!: History[];
 }

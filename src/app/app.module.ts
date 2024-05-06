@@ -25,7 +25,7 @@ import { HistoryTableComponent } from "./components/history-table/history-table.
     NgxJsonViewerModule,
     BrowserModule,
     HttpClientModule,
-    NgHttpCachingModule.forRoot({ lifetime: 60_000 }),
+    NgHttpCachingModule.forRoot({ lifetime: 5_000 }),
   ],
   entryComponents: [TaskTableComponent, ProcessTableComponent],
 })
