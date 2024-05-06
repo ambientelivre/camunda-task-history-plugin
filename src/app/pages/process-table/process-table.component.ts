@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Observable, from, map, switchMap, toArray } from "rxjs";
-import { DetailService } from "../history/process-instance/detail/detail.service";
-import { History } from "../history/process-instance/history";
-import { TaskService } from "../history/process-instance/task/task.service";
+import { DetailService } from "../../history/process-instance/detail/detail.service";
+import { History } from "../../history/process-instance/history";
+import { TaskService } from "../../history/process-instance/task/task.service";
 
 @Component({
   selector: "custom-process-table[taskid]",

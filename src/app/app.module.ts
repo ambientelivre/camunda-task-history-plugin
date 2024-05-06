@@ -5,10 +5,10 @@ import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule } from "@angular/common/http";
 import { NgHttpCachingModule } from "ng-http-caching";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
-import { TaskTableComponent } from "./task-table/task-table.component";
+import { TaskTableComponent } from "./pages/task-table/task-table.component";
 import { TableComponent } from "./components/table/table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
-import { ProcessTableComponent } from "./process-table/process-table.component";
+import { ProcessTableComponent } from "./pages/process-table/process-table.component";
 import { HistoryTableComponent } from "./components/history-table/history-table.component";
 
 @NgModule({

@@ -9,12 +9,12 @@ import {
   switchMap,
   toArray,
 } from "rxjs";
-import { DetailService } from "../history/process-instance/detail/detail.service";
-import { History } from "../history/process-instance/history";
-import { Task } from "../history/process-instance/task/task";
-import { TaskService } from "../history/process-instance/task/task.service";
-import { User } from "../user/user";
-import { UserService } from "../user/user.service";
+import { DetailService } from "../../history/process-instance/detail/detail.service";
+import { History } from "../../history/process-instance/history";
+import { Task } from "../../history/process-instance/task/task";
+import { TaskService } from "../../history/process-instance/task/task.service";
+import { User } from "../../user/user";
+import { UserService } from "../../user/user.service";
 
 @Component({
   selector: "custom-task-table[taskid]",
