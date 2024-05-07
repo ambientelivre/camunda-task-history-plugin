@@ -18,7 +18,7 @@
       </td>
       <td>{{ t.name }}</td>
       <td>{{ t.assignee }}</td>
-      <td colspan="2">
+      <td>
         <b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
       </td>
       <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
