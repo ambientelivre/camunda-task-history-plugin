@@ -1,3 +1,8 @@
 <custom-history-table
-  [history]="processInstanceDetail$ | async"
+  *ngIf="processInstanceDetail$ | async as p; else loading"
+  [history]="p"
 ></custom-history-table>
+
+<ng-template #loading>
+  <custom-loading></custom-loading>
+</ng-template>

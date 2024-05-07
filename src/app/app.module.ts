@@ -15,6 +15,7 @@ import { TableComponent } from "./components/table/table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
 import { ProcessTableComponent } from "./pages/process-table/process-table.component";
 import { TaskTableComponent } from "./pages/task-table/task-table.component";
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   schemas: [],
@@ -24,6 +25,7 @@ import { TaskTableComponent } from "./pages/task-table/task-table.component";
     DurationFormatPipe,
     TableComponent,
     HistoryTableComponent,
+    LoadingComponent,
   ],
   providers: [],
   imports: [

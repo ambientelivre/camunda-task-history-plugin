@@ -1,41 +1,47 @@
-<ng-template #header>
-  <tr>
-    <th>#</th>
-    <th>{{ "labels.TASK" | translate }}</th>
-    <th>{{ "labels.ASSIGNEE" | translate }}</th>
-    <th>{{ "labels.CREATION_DATE" | translate }}</th>
-    <th>{{ "labels.FINISHED" | translate }}</th>
-    <th>{{ "labels.FINISHED" | translate }}</th>
-    <th>{{ "labels.ACTION" | translate }}</th>
-  </tr>
-</ng-template>
+<ng-container *ngIf="taskProcessInstanceDetail$ | async as t; else loading">
+  <ng-template #header>
+    <tr>
+      <th>#</th>
+      <th>{{ "labels.TASK" | translate }}</th>
+      <th>{{ "labels.ASSIGNEE" | translate }}</th>
+      <th>{{ "labels.CREATION_DATE" | translate }}</th>
+      <th>{{ "labels.FINISHED" | translate }}</th>
+      <th>{{ "labels.FINISHED" | translate }}</th>
+      <th>{{ "labels.ACTION" | translate }}</th>
+    </tr>
+  </ng-template>
 
-<ng-template #body>
-  <tr *ngFor="let t of taskProcessInstanceDetail$ | async; let i = index">
-    <td>
-      <b>{{ i }}</b>
-    </td>
-    <td>{{ t.name }}</td>
-    <td>
-      <div style="display: flex; gap: 1em">
-        {{ t.assignee
-        }}<b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
-      </div>
-    </td>
-    <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-    <td>
-      <ng-container *ngIf="t.endTime">
-        {{ t.duration | durationFormat : "ms" : "hhmmss" }}</ng-container
-      >
-    </td>
-    <td style="padding: 0">
-      <custom-history-table
-        *ngIf="t.history.length > 0"
-        [history]="t.history"
-      ></custom-history-table>
-    </td>
-  </tr>
-</ng-template>
+  <ng-template #body>
+    <tr *ngFor="let t of t; let i = index">
+      <td>
+        <b>{{ i }}</b>
+      </td>
+      <td>{{ t.name }}</td>
+      <td>
+        <div style="display: flex; gap: 1em">
+          {{ t.assignee
+          }}<b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
+        </div>
+      </td>
+      <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>
+        <ng-container *ngIf="t.endTime">
+          {{ t.duration | durationFormat : "ms" : "hhmmss" }}</ng-container
+        >
+      </td>
+      <td style="padding: 0">
+        <custom-history-table
+          *ngIf="t.history.length > 0"
+          [history]="t.history"
+        ></custom-history-table>
+      </td>
+    </tr>
+  </ng-template>
 
-<custom-table [thead]="header" [tbody]="body"></custom-table>
+  <custom-table [thead]="header" [tbody]="body"></custom-table>
+</ng-container>
+
+<ng-template #loading>
+  <custom-loading></custom-loading>
+</ng-template>
