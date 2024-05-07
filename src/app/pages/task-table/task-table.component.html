@@ -14,6 +14,7 @@
   <ng-template #body>
     <ng-container *ngFor="let t of t; let i = index">
       <tr
+        [ngClass]="{ active: historyTable === t.id }"
         (click)="
           t.history.length > 0 &&
             (historyTable = historyTable === t.id ? '' : t.id)
@@ -49,7 +50,7 @@
       </tr>
 
       <tr *ngIf="historyTable === t.id">
-        <td colspan="2"></td>
+        <td></td>
         <td colspan="100%">
           <custom-history-table
             *ngIf="t.history.length > 0"
