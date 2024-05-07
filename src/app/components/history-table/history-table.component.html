@@ -20,11 +20,11 @@
       <td [ngSwitch]="h.valueType">
         <ng-container *ngSwitchCase="'null'"></ng-container>
 
-        <div *ngSwitchCase="'String'" class="form-group">
+        <div *ngSwitchCase="'String'">
           <input class="form-control" type="text" readonly [value]="h.value" />
         </div>
 
-        <div *ngSwitchCase="'Boolean'" class="form-group">
+        <div *ngSwitchCase="'Boolean'">
           <input
             class="form-control"
             type="checkbox"
@@ -33,41 +33,32 @@
           />
         </div>
 
-        <div *ngSwitchCase="'Short'" class="form-group">
-          <input
-            class="form-control"
-            type="number"
-            readonly
-            [value]="h.value"
-          />
-        </div>
+        <ng-template *ngSwitchCase="'Short'" [ngTemplateOutlet]="inputNumber">
+        </ng-template>
 
-        <div *ngSwitchCase="'Integer'" class="form-group">
-          <input
-            class="form-control"
-            type="number"
-            readonly
-            [value]="h.value"
-          />
-        </div>
+        <ng-template
+          *ngSwitchCase="'Integer'"
+          [ngTemplateOutlet]="inputNumber"
+        ></ng-template>
 
-        <div *ngSwitchCase="'Long'" class="form-group">
-          <input
-            class="form-control"
-            type="number"
-            readonly
-            [value]="h.value"
-          />
-        </div>
+        <ng-template *ngSwitchCase="'Long'" [ngTemplateOutlet]="inputNumber">
+        </ng-template>
 
-        <div *ngSwitchCase="'Double'" class="form-group">
-          <input
-            class="form-control"
-            type="number"
-            readonly
-            [value]="h.value"
-          />
-        </div>
+        <ng-template
+          *ngSwitchCase="'Double'"
+          [ngTemplateOutlet]="inputNumber"
+        ></ng-template>
+
+        <ng-template #inputNumber>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="number"
+              readonly
+              [value]="h.value"
+            />
+          </div>
+        </ng-template>
 
         <a
           *ngSwitchCase="'File'"
