@@ -18,4 +18,8 @@ export class VariableService {
   findManyVariableByTaskId(params, ...taskId: string[]) {
     return this.#findManyVariable({ ...params, taskId });
   }
+
+  findOneVariableById(id: string) {
+    return this.variableRepository.findOneVariable(id);
+  }
 }

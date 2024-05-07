@@ -10,28 +10,60 @@
 </ng-template>
 
 <ng-template #body>
-  <tr *ngFor="let h of history; let i = index">
+  <tr *ngFor="let h of history$ | async; let i = index">
     <td>
       <b>{{ i }}</b>
     </td>
     <td>{{ h.type }}</td>
     <td>{{ h.key }}</td>
-    <td>
+    <td [ngSwitch]="h.valueType">
+      <ng-container *ngSwitchCase="'null'"></ng-container>
+
+      <div *ngSwitchCase="'String'" class="form-group">
+        <input class="form-control" type="text" readonly [value]="h.value" />
+      </div>
+
+      <div *ngSwitchCase="'Boolean'" class="form-group">
+        <input
+          class="form-control"
+          type="checkbox"
+          disabled
+          [value]="h.value"
+        />
+      </div>
+
+      <div *ngSwitchCase="'Short'" class="form-group">
+        <input class="form-control" type="number" readonly [value]="h.value" />
+      </div>
+
+      <div *ngSwitchCase="'Integer'" class="form-group">
+        <input class="form-control" type="number" readonly [value]="h.value" />
+      </div>
+
+      <div *ngSwitchCase="'Long'" class="form-group">
+        <input class="form-control" type="number" readonly [value]="h.value" />
+      </div>
+
+      <div *ngSwitchCase="'Double'" class="form-group">
+        <input class="form-control" type="number" readonly [value]="h.value" />
+      </div>
+
       <a
-        *ngIf="h.valueType === 'File'; else jsonType"
+        *ngSwitchCase="'File'"
         href="/camunda/api/engine/engine/default/variable-instance/{{
           h.id
         }}/data"
         >{{ "labels.DOWNLOAD" | translate }}</a
       >
 
-      <ng-template #jsonType>
-        <ngx-json-viewer
-          *ngIf="h.value !== null"
-          [expanded]="true"
-          [json]="h.valueType === 'Json' ? parse(h.value) : h.value"
-        ></ngx-json-viewer>
-      </ng-template>
+      <ngx-json-viewer
+        *ngSwitchCase="'Json'"
+        [json]="parse(h.value)"
+      ></ngx-json-viewer>
+
+      <ng-container *ngSwitchDefault>
+        <ngx-json-viewer [json]="h.value"></ngx-json-viewer>
+      </ng-container>
     </td>
     <td>{{ h.startTime | date : "M/d/yy, h:mm:ss" }}</td>
     <td>{{ h.endTime | date : "M/d/yy, h:mm:ss" }}</td>

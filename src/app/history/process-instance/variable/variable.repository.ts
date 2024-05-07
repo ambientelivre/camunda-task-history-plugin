@@ -12,4 +12,10 @@ export class VariableRepository {
       { params }
     );
   }
+
+  findOneVariable(id: string) {
+    return this.httpClient.get<Variable>(
+      `/camunda/api/engine/engine/default/history/variable-instance/${id}`
+    );
+  }
 }

@@ -40,7 +40,7 @@ import { LoadingComponent } from './components/loading/loading.component';
         deps: [HttpClient],
       },
     }),
-    NgHttpCachingModule.forRoot({ lifetime: 300_000 }),
+    NgHttpCachingModule.forRoot({ lifetime: 10_000 }),
   ],
   entryComponents: [TaskTableComponent, ProcessTableComponent],
 })

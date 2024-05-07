@@ -3,7 +3,7 @@
     <tr>
       <th>#</th>
       <th>{{ "labels.TASK" | translate }}</th>
-      <th>{{ "labels.ASSIGNEE" | translate }}</th>
+      <th colspan="2">{{ "labels.ASSIGNEE" | translate }}</th>
       <th>{{ "labels.CREATION_DATE" | translate }}</th>
       <th>{{ "labels.FINISHED" | translate }}</th>
       <th>{{ "labels.FINISHED" | translate }}</th>
@@ -17,11 +17,9 @@
         <b>{{ i }}</b>
       </td>
       <td>{{ t.name }}</td>
-      <td>
-        <div style="display: flex; gap: 1em">
-          {{ t.assignee
-          }}<b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
-        </div>
+      <td>{{ t.assignee }}</td>
+      <td colspan="2">
+        <b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
       </td>
       <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
       <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
