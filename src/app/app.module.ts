@@ -2,7 +2,11 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Injector, NgModule } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
 import { BrowserModule } from "@angular/platform-browser";
-import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from "@ngx-translate/core";
 import { NgHttpCachingModule } from "ng-http-caching";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { CamundaTranslateLoader } from "./camunda-translate-loader";
@@ -28,19 +32,25 @@ import { TaskTableComponent } from "./pages/task-table/task-table.component";
     HttpClientModule,
     TranslateModule.forRoot({
       defaultLanguage: "en",
-      useDefaultLang: true,
       loader: {
         provide: TranslateLoader,
         useClass: CamundaTranslateLoader,
         deps: [HttpClient],
       },
     }),
-    NgHttpCachingModule.forRoot({ lifetime: 5_000 }),
+    NgHttpCachingModule.forRoot({ lifetime: 300_000 }),
   ],
   entryComponents: [TaskTableComponent, ProcessTableComponent],
 })
 export class AppModule {
-  constructor(private injector: Injector) {
+  constructor(
+    private translateService: TranslateService,
+    private injector: Injector
+  ) {
+    this.translateService.setDefaultLang(
+      this.translateService.getBrowserCultureLang()
+    );
+
     customElements.define(
       "task-table",
       createCustomElement(TaskTableComponent, {
