@@ -22,6 +22,7 @@ import { UserService } from "../../user/user.service";
   styleUrls: ["./task-table.component.css"],
 })
 export class TaskTableComponent implements OnInit {
+  historyTable = "";
   taskProcessInstanceDetail$: Observable<
     (Task & { history: History[]; user: User })[]
   >;

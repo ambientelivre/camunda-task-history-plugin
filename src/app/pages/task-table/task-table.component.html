@@ -2,39 +2,62 @@
   <ng-template #header>
     <tr>
       <th>#</th>
+      <th></th>
       <th>{{ "labels.TASK" | translate }}</th>
       <th colspan="2">{{ "labels.ASSIGNEE" | translate }}</th>
       <th>{{ "labels.CREATION_DATE" | translate }}</th>
       <th>{{ "labels.FINISHED" | translate }}</th>
       <th>{{ "labels.FINISHED" | translate }}</th>
-      <th>{{ "labels.ACTION" | translate }}</th>
     </tr>
   </ng-template>
 
   <ng-template #body>
-    <tr *ngFor="let t of t; let i = index">
-      <td>
-        <b>{{ i }}</b>
-      </td>
-      <td>{{ t.name }}</td>
-      <td>{{ t.assignee }}</td>
-      <td>
-        <b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
-      </td>
-      <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-      <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
-      <td>
-        <ng-container *ngIf="t.endTime">
-          {{ t.duration | durationFormat : "ms" : "hhmmss" }}</ng-container
-        >
-      </td>
-      <td style="padding: 0">
-        <custom-history-table
-          *ngIf="t.history.length > 0"
-          [history]="t.history"
-        ></custom-history-table>
-      </td>
-    </tr>
+    <ng-container *ngFor="let t of t; let i = index">
+      <tr
+        (click)="
+          t.history.length > 0 &&
+            (historyTable = historyTable === t.id ? '' : t.id)
+        "
+        style="cursor: pointer"
+      >
+        <td>
+          <b>{{ i }}</b>
+        </td>
+        <td>
+          <ng-container *ngIf="t.history.length > 0">
+            <div
+              *ngIf="t.id === historyTable; else unSeletedHistory"
+              class="glyphicon glyphicon-chevron-down"
+            ></div>
+            <ng-template #unSeletedHistory>
+              <div class="glyphicon glyphicon-chevron-up"></div>
+            </ng-template>
+          </ng-container>
+        </td>
+        <td>{{ t.name }}</td>
+        <td>{{ t.assignee }}</td>
+        <td>
+          <b *ngIf="t.user as u">{{ u.firstName }} {{ u.lastName }}</b>
+        </td>
+        <td>{{ t.startTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>{{ t.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+        <td>
+          <ng-container *ngIf="t.endTime">
+            {{ t.duration | durationFormat : "ms" : "hhmmss" }}</ng-container
+          >
+        </td>
+      </tr>
+
+      <tr *ngIf="historyTable === t.id">
+        <td colspan="2"></td>
+        <td colspan="100%">
+          <custom-history-table
+            *ngIf="t.history.length > 0"
+            [history]="t.history"
+          ></custom-history-table>
+        </td>
+      </tr>
+    </ng-container>
   </ng-template>
 
   <custom-table [thead]="header" [tbody]="body"></custom-table>
