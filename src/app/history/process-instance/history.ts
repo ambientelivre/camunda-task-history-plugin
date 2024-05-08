@@ -12,7 +12,8 @@ export class History {
     startTime: Date | string,
     endTime: Date | string,
     public id: string,
-    public valueType: string
+    public valueType: string,
+    public valueInfo?
   ) {
     this.startTime = new Date(startTime);
     this.endTime = new Date(endTime);
@@ -28,7 +29,8 @@ export class History {
       detail.time,
       detail.removalTime,
       detail.variableInstanceId,
-      detail.variableType
+      detail.variableType,
+      detail.valueInfo
     );
   }
 
@@ -40,7 +42,8 @@ export class History {
       new Date(variable.createTime),
       new Date(variable.removalTime),
       variable.id,
-      variable.type
+      variable.type,
+      variable.valueInfo
     );
   }
 

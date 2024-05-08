@@ -27,10 +27,7 @@
 
   <ng-template #body>
     <tr
-      *ngFor="
-        let h of h | customSort : sortBy.id : sortBy.order;
-        let i = index
-      "
+      *ngFor="let h of h | customSort : sortBy.id : sortBy.order; let i = index"
     >
       <td>
         <b>{{ i }}</b>
@@ -80,15 +77,19 @@
           </div>
         </ng-template>
 
-        <a
-          *ngSwitchCase="'File'"
-          href="/camunda/api/engine/engine/default/variable-instance/{{
-            h.id
-          }}/data"
-          ><button type="button" class="btn btn-primary">
-            {{ "labels.DOWNLOAD" | translate }}
-          </button></a
-        >
+        <div style="display: flex; gap: 1em">
+          <b>{{ h.valueInfo.filename }}</b>
+
+          <a
+            *ngSwitchCase="'File'"
+            href="/camunda/api/engine/engine/default/variable-instance/{{
+              h.id
+            }}/data"
+            ><button type="button" class="btn btn-primary">
+              {{ "labels.DOWNLOAD" | translate }}
+            </button></a
+          >
+        </div>
 
         <ngx-json-viewer
           *ngSwitchCase="'Json'"
