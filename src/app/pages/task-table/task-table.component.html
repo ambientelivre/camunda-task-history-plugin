@@ -1,25 +1,47 @@
 <ng-container *ngIf="taskProcessInstanceDetail$ | async as t; else loading">
   <ng-template #header>
-    <tr>
-      <th>#</th>
+    <tr customSortHeader (sortByClick)="sortBy = $event">
+      <th customSortHeaderId="id">
+        <custom-sort-header-icon></custom-sort-header-icon>#
+      </th>
       <th></th>
-      <th>{{ "labels.TASK" | translate }}</th>
-      <th colspan="2">{{ "labels.ASSIGNEE" | translate }}</th>
-      <th>{{ "labels.CREATION_DATE" | translate }}</th>
-      <th>{{ "labels.FINISHED" | translate }}</th>
-      <th>{{ "labels.FINISHED" | translate }}</th>
+      <th customSortHeaderId="name">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.TASK" | translate }}
+      </th>
+      <th customSortHeaderId="assignee" colspan="2">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.ASSIGNEE" | translate }}
+      </th>
+      <th customSortHeaderId="startTime">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.CREATION_DATE" | translate }}
+      </th>
+      <th customSortHeaderId="endTime">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.FINISHED" | translate }}
+      </th>
+      <th customSortHeaderId="duration">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.FINISHED" | translate }}
+      </th>
     </tr>
   </ng-template>
 
   <ng-template #body>
-    <ng-container *ngFor="let t of t; let i = index">
+    <ng-container
+      *ngFor="
+        let t of t | customSort : sortBy.id : sortBy.sortBy;
+        let i = index
+      "
+    >
       <tr
+        [ngStyle]="{ cursor: t.history.length > 0 ? 'pointer' : '' }"
         [ngClass]="{ active: historyTable === t.id }"
         (click)="
           t.history.length > 0 &&
             (historyTable = historyTable === t.id ? '' : t.id)
         "
-        style="cursor: pointer"
       >
         <td>
           <b>{{ i }}</b>

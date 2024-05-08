@@ -1,30 +1,50 @@
 <ng-container *ngIf="history$ | async as h; else loading">
   <ng-template #header>
-    <tr>
+    <tr customSortHeader (sortByClick)="sortBy = $event">
       <th>#</th>
-      <th>{{ "labels.ACTION" | translate }}</th>
-      <th>{{ "labels.VARIABLE_NAME" | translate }}</th>
-      <th>{{ "labels.VARIABLE_VALUE" | translate }}</th>
-      <th>{{ "labels.CREATION_DATE" | translate }}</th>
-      <th>{{ "labels.FINISHED" | translate }}</th>
+      <th customSortHeaderId="type">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.ACTION" | translate }}
+      </th>
+      <th customSortHeaderId="key">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.VARIABLE_NAME" | translate }}
+      </th>
+      <th customSortHeaderId="value">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.VARIABLE_VALUE" | translate }}
+      </th>
+      <th customSortHeaderId="startTime">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.CREATION_DATE" | translate }}
+      </th>
+      <th customSortHeaderId="endTime">
+        <custom-sort-header-icon></custom-sort-header-icon>
+        {{ "labels.FINISHED" | translate }}
+      </th>
     </tr>
   </ng-template>
 
   <ng-template #body>
-    <tr *ngFor="let h of h; let i = index">
+    <tr
+      *ngFor="
+        let h of h | customSort : sortBy.id : sortBy.sortBy;
+        let i = index
+      "
+    >
       <td>
         <b>{{ i }}</b>
       </td>
       <td>{{ h.type }}</td>
       <td>{{ h.key }}</td>
       <td [ngSwitch]="h.valueType">
-        <ng-container *ngSwitchCase="'null'"></ng-container>
+        <ng-container *ngSwitchCase="'Null'"></ng-container>
 
-        <div *ngSwitchCase="'String'">
+        <div *ngSwitchCase="'String'" class="form-group">
           <input class="form-control" type="text" readonly [value]="h.value" />
         </div>
 
-        <div *ngSwitchCase="'Boolean'">
+        <div *ngSwitchCase="'Boolean'" class="form-group">
           <input
             class="form-control"
             type="checkbox"

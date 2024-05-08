@@ -11,11 +11,15 @@ import { NgHttpCachingModule } from "ng-http-caching";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { CamundaTranslateLoader } from "./camunda-translate-loader";
 import { HistoryTableComponent } from "./components/history-table/history-table.component";
+import { LoadingComponent } from "./components/loading/loading.component";
 import { TableComponent } from "./components/table/table.component";
 import { DurationFormatPipe } from "./duration-format.pipe";
 import { ProcessTableComponent } from "./pages/process-table/process-table.component";
 import { TaskTableComponent } from "./pages/task-table/task-table.component";
-import { LoadingComponent } from './components/loading/loading.component';
+import { SortPipe } from "./sort/sort.pipe";
+import { SortHeaderDirective } from "./sort/sort-header.directive";
+import { SortHeaderIdDirective } from "./sort/sort-header-id.directive";
+import { SortHeaderIconComponent } from './sort/sort-header-icon/sort-header-icon.component';
 
 @NgModule({
   schemas: [],
@@ -26,6 +30,10 @@ import { LoadingComponent } from './components/loading/loading.component';
     TableComponent,
     HistoryTableComponent,
     LoadingComponent,
+    SortPipe,
+    SortHeaderDirective,
+    SortHeaderIdDirective,
+    SortHeaderIconComponent,
   ],
   providers: [],
   imports: [
