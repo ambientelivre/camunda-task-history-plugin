@@ -6,46 +6,48 @@ import {
   Output,
   QueryList,
 } from "@angular/core";
-import { SortByClickEvent } from "./sort-click-event";
-import { SortHeaderIdDirective } from "./sort-header-id.directive";
-import { SortHeaderIconComponent } from "./sort-header-icon/sort-header-icon.component";
+import { SortEvent } from "./sort-event";
+import { SortColumnIconComponent } from "./sort-column-icon/sort-column-icon.component";
+import { SortColumnIdDirective } from "./sort-column-id.directive";
 
 @Directive({
   selector: "[customSortHeader]",
 })
 export class SortHeaderDirective implements AfterContentInit {
   id;
-  sortBy = undefined;
-  sortHeaderIcon?: SortHeaderIconComponent;
+  order;
+  icon?: SortColumnIconComponent;
 
-  @ContentChildren(SortHeaderIdDirective)
-  sortHeaderId!: QueryList<SortHeaderIdDirective>;
+  @ContentChildren(SortColumnIdDirective)
+  columnId!: QueryList<SortColumnIdDirective>;
 
   @Output()
-  sortByClick = new EventEmitter<SortByClickEvent>();
+  sortClick = new EventEmitter<SortEvent>();
 
   ngAfterContentInit(): void {
-    this.sortHeaderId.forEach((el) => {
-      el.click.asObservable().subscribe((id) => {
-        if (this.sortHeaderIcon) {
+    this.columnId.forEach((el) => {
+      el.click$.subscribe((id) => {
+        console.log(id);
+
+        if (this.icon) {
           if (this.id !== id) {
-            this.sortHeaderIcon.sortBy = undefined;
-            this.sortBy = "desc";
-          } else if (this.sortBy === "desc") {
-            this.sortBy = "asc";
-          } else if (this.sortBy === "asc") {
-            this.sortBy = undefined;
+            this.icon.order = undefined;
+            this.order = "desc";
+          } else if (this.order === "desc") {
+            this.order = "asc";
+          } else if (this.order === "asc") {
+            this.order = undefined;
           } else {
-            this.sortBy = "desc";
+            this.order = "desc";
           }
         } else {
-          this.sortBy = "desc";
+          this.order = "desc";
         }
 
-        this.sortHeaderIcon = el.sortHeaderIcon;
-        this.sortHeaderIcon.sortBy = this.sortBy;
+        this.icon = el.icon;
+        this.icon.order = this.order;
         this.id = id;
-        this.sortByClick.emit({ id, sortBy: this.sortBy });
+        this.sortClick.emit(new SortEvent(this.id, this.order));
       });
     });
   }

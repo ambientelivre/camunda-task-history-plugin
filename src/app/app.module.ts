@@ -18,8 +18,8 @@ import { ProcessTableComponent } from "./pages/process-table/process-table.compo
 import { TaskTableComponent } from "./pages/task-table/task-table.component";
 import { SortPipe } from "./sort/sort.pipe";
 import { SortHeaderDirective } from "./sort/sort-header.directive";
-import { SortHeaderIdDirective } from "./sort/sort-header-id.directive";
-import { SortHeaderIconComponent } from './sort/sort-header-icon/sort-header-icon.component';
+import { SortColumnIdDirective } from "./sort/sort-column-id.directive";
+import { SortColumnIconComponent } from './sort/sort-column-icon/sort-column-icon.component';
 
 @NgModule({
   schemas: [],
@@ -32,8 +32,8 @@ import { SortHeaderIconComponent } from './sort/sort-header-icon/sort-header-ico
     LoadingComponent,
     SortPipe,
     SortHeaderDirective,
-    SortHeaderIdDirective,
-    SortHeaderIconComponent,
+    SortColumnIdDirective,
+    SortColumnIconComponent,
   ],
   providers: [],
   imports: [

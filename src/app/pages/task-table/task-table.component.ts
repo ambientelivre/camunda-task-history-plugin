@@ -15,7 +15,7 @@ import { Task } from "../../history/process-instance/task/task";
 import { TaskService } from "../../history/process-instance/task/task.service";
 import { User } from "../../user/user";
 import { UserService } from "../../user/user.service";
-import { SortByClickEvent } from "src/app/sort/sort-click-event";
+import { SortEvent } from "src/app/sort/sort-event";
 
 @Component({
   selector: "custom-task-table[taskid]",
@@ -23,8 +23,8 @@ import { SortByClickEvent } from "src/app/sort/sort-click-event";
   styleUrls: ["./task-table.component.css"],
 })
 export class TaskTableComponent implements OnInit {
-  sortBy: SortByClickEvent = { id: "startTime", sortBy: "desc" };
-  historyTable = "";
+  sortBy = new SortEvent("startTime", "desc");
+  historyTableToggle = "";
   taskProcessInstanceDetail$: Observable<
     (Task & { history: History[]; user: User })[]
   >;

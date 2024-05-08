@@ -1,28 +1,26 @@
 <ng-container *ngIf="taskProcessInstanceDetail$ | async as t; else loading">
   <ng-template #header>
-    <tr customSortHeader (sortByClick)="sortBy = $event">
-      <th customSortHeaderId="id">
-        <custom-sort-header-icon></custom-sort-header-icon>#
-      </th>
+    <tr customSortHeader (sortClick)="sortBy = $event">
+      <th customSortColumnId="id">#</th>
       <th></th>
-      <th customSortHeaderId="name">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="name">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.TASK" | translate }}
       </th>
-      <th customSortHeaderId="assignee" colspan="2">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="assignee" colspan="2">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.ASSIGNEE" | translate }}
       </th>
-      <th customSortHeaderId="startTime">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="startTime">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.CREATION_DATE" | translate }}
       </th>
-      <th customSortHeaderId="endTime">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="endTime">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.FINISHED" | translate }}
       </th>
-      <th customSortHeaderId="duration">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="duration">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.FINISHED" | translate }}
       </th>
     </tr>
@@ -30,17 +28,14 @@
 
   <ng-template #body>
     <ng-container
-      *ngFor="
-        let t of t | customSort : sortBy.id : sortBy.sortBy;
-        let i = index
-      "
+      *ngFor="let t of t | customSort : sortBy.id : sortBy.order; let i = index"
     >
       <tr
         [ngStyle]="{ cursor: t.history.length > 0 ? 'pointer' : '' }"
-        [ngClass]="{ active: historyTable === t.id }"
+        [ngClass]="{ active: historyTableToggle === t.id }"
         (click)="
           t.history.length > 0 &&
-            (historyTable = historyTable === t.id ? '' : t.id)
+            (historyTableToggle = historyTableToggle === t.id ? '' : t.id)
         "
       >
         <td>
@@ -49,7 +44,7 @@
         <td>
           <ng-container *ngIf="t.history.length > 0">
             <div
-              *ngIf="t.id === historyTable; else unSeletedHistory"
+              *ngIf="t.id === historyTableToggle; else unSeletedHistory"
               class="glyphicon glyphicon-chevron-down"
             ></div>
             <ng-template #unSeletedHistory>
@@ -71,7 +66,7 @@
         </td>
       </tr>
 
-      <tr *ngIf="historyTable === t.id">
+      <tr *ngIf="historyTableToggle === t.id">
         <td></td>
         <td colspan="100%">
           <custom-history-table

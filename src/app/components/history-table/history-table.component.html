@@ -1,25 +1,25 @@
 <ng-container *ngIf="history$ | async as h; else loading">
   <ng-template #header>
-    <tr customSortHeader (sortByClick)="sortBy = $event">
+    <tr customSortHeader (sortClick)="sortBy = $event">
       <th>#</th>
-      <th customSortHeaderId="type">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="type">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.ACTION" | translate }}
       </th>
-      <th customSortHeaderId="key">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="key">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.VARIABLE_NAME" | translate }}
       </th>
-      <th customSortHeaderId="value">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="value">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.VARIABLE_VALUE" | translate }}
       </th>
-      <th customSortHeaderId="startTime">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="startTime">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.CREATION_DATE" | translate }}
       </th>
-      <th customSortHeaderId="endTime">
-        <custom-sort-header-icon></custom-sort-header-icon>
+      <th customSortColumnId="endTime">
+        <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.FINISHED" | translate }}
       </th>
     </tr>
@@ -28,7 +28,7 @@
   <ng-template #body>
     <tr
       *ngFor="
-        let h of h | customSort : sortBy.id : sortBy.sortBy;
+        let h of h | customSort : sortBy.id : sortBy.order;
         let i = index
       "
     >

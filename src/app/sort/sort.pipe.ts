@@ -5,7 +5,7 @@ import { orderBy } from "lodash";
   name: "customSort",
 })
 export class SortPipe implements PipeTransform {
-  transform<T extends any[]>(data: T, id: string, sortBy: "asc" | "desc"): T {
-    return orderBy(data, [id], sortBy) as T;
+  transform<T extends any[]>(data: T, id: string, orders: "asc" | "desc"): T {
+    return orderBy(data, [id], orders) as T;
   }
 }
