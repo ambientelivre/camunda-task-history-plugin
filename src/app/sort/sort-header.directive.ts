@@ -1,11 +1,13 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   ContentChildren,
   Directive,
   EventEmitter,
   OnDestroy,
   Output,
   QueryList,
+  ViewChildren,
 } from "@angular/core";
 import { Subscription, from, mergeMap, tap } from "rxjs";
 import { SortColumnIconComponent } from "./sort-column-icon/sort-column-icon.component";
@@ -15,18 +17,18 @@ import { SortEvent } from "./sort-event";
 @Directive({
   selector: "[customSortHeader]",
 })
-export class SortHeaderDirective implements AfterContentInit, OnDestroy {
+export class SortHeaderDirective implements AfterViewInit, OnDestroy {
   id;
   icon?: SortColumnIconComponent;
   click: Subscription;
 
-  @ContentChildren(SortColumnIdDirective)
+  @ViewChildren(SortColumnIdDirective)
   columnId!: QueryList<SortColumnIdDirective>;
 
   @Output()
   sortClick = new EventEmitter<SortEvent>();
 
-  ngAfterContentInit(): void {
+  ngAfterViewInit(): void {
     this.click = from(this.columnId.toArray())
       .pipe(
         mergeMap((el) =>

@@ -20,6 +20,9 @@ import { SortPipe } from "./sort/sort.pipe";
 import { SortHeaderDirective } from "./sort/sort-header.directive";
 import { SortColumnIdDirective } from "./sort/sort-column-id.directive";
 import { SortColumnIconComponent } from './sort/sort-column-icon/sort-column-icon.component';
+import { SearchColumnIdDirective } from './search/search-column-id.directive';
+import { SearchHeaderDirective } from './search/search-header.directive';
+import { SearchbarColumnComponent } from './search/searchbar-column/searchbar-column.component';
 
 @NgModule({
   schemas: [],
@@ -34,6 +37,9 @@ import { SortColumnIconComponent } from './sort/sort-column-icon/sort-column-ico
     SortHeaderDirective,
     SortColumnIdDirective,
     SortColumnIconComponent,
+    SearchColumnIdDirective,
+    SearchHeaderDirective,
+    SearchbarColumnComponent,
   ],
   providers: [],
   imports: [

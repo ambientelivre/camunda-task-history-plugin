@@ -20,7 +20,7 @@ export class SortColumnIdDirective implements OnInit {
   @ContentChild(SortColumnIconComponent)
   icon!: SortColumnIconComponent;
 
-  constructor(private el: ElementRef<HTMLTableCellElement>) {}
+  constructor(private el: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
     this.click$ = fromEvent(this.el.nativeElement, "click").pipe(

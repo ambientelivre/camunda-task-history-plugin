@@ -1,11 +1,13 @@
 <ng-container *ngIf="taskProcessInstanceDetail$ | async as t; else loading">
   <ng-template #header>
     <tr customSortHeader (sortClick)="sortBy = $event">
-      <th customSortColumnId="id">#</th>
+      <th>#</th>
       <th></th>
       <th customSortColumnId="name">
-        <custom-sort-column-icon></custom-sort-column-icon>
-        {{ "labels.TASK" | translate }}
+        <custom-searchbar-column></custom-searchbar-column>
+        <custom-sort-column-icon>
+          {{ "labels.TASK" | translate }}
+        </custom-sort-column-icon>
       </th>
       <th customSortColumnId="assignee" colspan="2">
         <custom-sort-column-icon></custom-sort-column-icon>
