@@ -2,22 +2,16 @@ import { Detail } from "./detail/detail";
 import { Variable } from "./variable/variable";
 
 export class History {
-  startTime: Date;
-  endTime: Date;
-
   constructor(
     public key: string,
     public value,
     public type: string,
-    startTime: Date | string,
-    endTime: Date | string,
+    public startTime: Date | string,
+    public endTime: Date | string,
     public id: string,
     public valueType: string,
     public valueInfo?
-  ) {
-    this.startTime = new Date(startTime);
-    this.endTime = new Date(endTime);
-  }
+  ) {}
 
   static fromDetail(detail: Detail) {
     const isVariable = typeof detail.variableName === "string";
@@ -39,18 +33,11 @@ export class History {
       variable.name,
       variable.value,
       variable.state,
-      new Date(variable.createTime),
-      new Date(variable.removalTime),
+      variable.createTime,
+      variable.removalTime,
       variable.id,
       variable.type,
       variable.valueInfo
-    );
-  }
-
-  static sortByStartTimeDesc(history: History[]) {
-    return history.sort(
-      ({ startTime: asc }, { startTime: desc }) =>
-        desc.getTime() - asc.getTime()
     );
   }
 }

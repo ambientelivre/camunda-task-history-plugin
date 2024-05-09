@@ -1,10 +1,12 @@
-<ng-container *ngIf="order">
+<span *ngIf="!order; else desc" class="glyphicon glyphicon-sort"></span>
+
+<ng-template #desc>
   <span
     *ngIf="order === 'desc'; else asc"
     class="glyphicon glyphicon-arrow-up"
-  ></span>
+  ></span
+></ng-template>
 
-  <ng-template #asc>
-    <span class="glyphicon glyphicon-arrow-down"></span>
-  </ng-template>
-</ng-container>
+<ng-template #asc>
+  <span class="glyphicon glyphicon-arrow-down"></span>
+</ng-template>

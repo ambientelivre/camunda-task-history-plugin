@@ -34,8 +34,7 @@ export class ProcessTableComponent implements OnInit {
               map(History.fromDetail)
             )
         ),
-        toArray(),
-        map(History.sortByStartTimeDesc)
+        toArray()
       );
   }
 }
