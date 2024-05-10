@@ -25,6 +25,7 @@ import { SortEvent } from "src/app/sort/sort-event";
 export class TaskTableComponent implements OnInit {
   sortBy = new SortEvent("startTime", "desc");
   historyTableToggle = "";
+  historyTableToggleAll = false;
   taskProcessInstanceDetail$: Observable<
     (Task & { history: History[]; user: User })[]
   >;

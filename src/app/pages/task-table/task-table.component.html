@@ -2,7 +2,15 @@
   <ng-template #header>
     <tr customSortHeader (sortClick)="sortBy = $event">
       <th customSortColumnId="id">#</th>
-      <th></th>
+      <th (click)="historyTableToggleAll = !historyTableToggleAll">
+        <div
+          *ngIf="historyTableToggleAll; else unSeletedAllHistory"
+          class="glyphicon glyphicon-chevron-down"
+        ></div>
+        <ng-template #unSeletedAllHistory>
+          <div class="glyphicon glyphicon-chevron-up"></div>
+        </ng-template>
+      </th>
       <th customSortColumnId="name">
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.TASK" | translate }}
@@ -35,7 +43,8 @@
         [ngClass]="{ active: historyTableToggle === t.id }"
         (click)="
           t.history.length > 0 &&
-            (historyTableToggle = historyTableToggle === t.id ? '' : t.id)
+            (historyTableToggle = historyTableToggle === t.id ? '' : t.id);
+          historyTableToggleAll = false
         "
       >
         <td>
@@ -66,13 +75,15 @@
         </td>
       </tr>
 
-      <tr *ngIf="historyTableToggle === t.id">
+      <tr
+        *ngIf="
+          t.history.length > 0 &&
+          (historyTableToggleAll || historyTableToggle === t.id)
+        "
+      >
         <td></td>
         <td colspan="100%">
-          <custom-history-table
-            *ngIf="t.history.length > 0"
-            [history]="t.history"
-          ></custom-history-table>
+          <custom-history-table [history]="t.history"></custom-history-table>
         </td>
       </tr>
     </ng-container>
