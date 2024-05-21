@@ -2,20 +2,19 @@ import { Component, Input, OnInit } from "@angular/core";
 import {
   Observable,
   forkJoin,
-  from,
   map,
   mergeMap,
   of,
   switchMap,
   toArray,
 } from "rxjs";
-import { DetailService } from "../../history/process-instance/detail/detail.service";
-import { History } from "../../history/process-instance/history";
-import { Task } from "../../history/process-instance/task/task";
-import { TaskService } from "../../history/process-instance/task/task.service";
+import { Detail } from "src/app/process-instance/detail/detail";
+import { SortEvent } from "src/app/sort/sort-event";
+import { DetailService } from "../../process-instance/detail/detail.service";
+import { Task } from "../../process-instance/task/task";
+import { TaskService } from "../../process-instance/task/task.service";
 import { User } from "../../user/user";
 import { UserService } from "../../user/user.service";
-import { SortEvent } from "src/app/sort/sort-event";
 
 @Component({
   selector: "custom-task-table[taskid]",
@@ -23,11 +22,11 @@ import { SortEvent } from "src/app/sort/sort-event";
   styleUrls: ["./task-table.component.css"],
 })
 export class TaskTableComponent implements OnInit {
-  sortBy = new SortEvent("startTime", "desc");
-  historyTableToggle = "";
-  historyTableToggleAll = false;
+  sortBy = new SortEvent("time", "desc");
+  subTableToggle = "";
+  subTableToggleAll = false;
   taskProcessInstanceDetail$: Observable<
-    (Task & { history: History[]; user: User })[]
+    (Task & { detail: Detail[]; user: User })[]
   >;
 
   @Input()
@@ -45,7 +44,7 @@ export class TaskTableComponent implements OnInit {
       .pipe(
         switchMap(({ processInstanceId }) =>
           this.taskService.findManyTask({ processInstanceId }).pipe(
-            switchMap((task) => from(task)),
+            switchMap((task) => task),
             mergeMap((task) =>
               forkJoin([
                 this.detailService.findManyProcessInstanceDetail({
@@ -58,7 +57,7 @@ export class TaskTableComponent implements OnInit {
               ]).pipe(
                 map(([detail, user]) => ({
                   ...task,
-                  history: detail.map(History.fromDetail),
+                  detail,
                   user,
                 }))
               )

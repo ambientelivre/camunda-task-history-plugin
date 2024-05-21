@@ -2,13 +2,13 @@
   <ng-template #header>
     <tr customSortHeader (sortClick)="sortBy = $event">
       <th customSortColumnId="id">#</th>
-      <th (click)="historyTableToggleAll = !historyTableToggleAll">
+      <th (click)="subTableToggleAll = !subTableToggleAll; subTableToggle = ''">
         <div
-          *ngIf="historyTableToggleAll; else unSeletedAllHistory"
-          class="glyphicon glyphicon-chevron-down"
+          *ngIf="!subTableToggleAll; else subTableToggleAllRef"
+          class="glyphicon glyphicon-chevron-up"
         ></div>
-        <ng-template #unSeletedAllHistory>
-          <div class="glyphicon glyphicon-chevron-up"></div>
+        <ng-template #subTableToggleAllRef>
+          <div class="glyphicon glyphicon-chevron-down"></div>
         </ng-template>
       </th>
       <th customSortColumnId="name">
@@ -39,25 +39,36 @@
       *ngFor="let t of t | customSort : sortBy.id : sortBy.order; let i = index"
     >
       <tr
-        [ngStyle]="{ cursor: t.history.length > 0 ? 'pointer' : '' }"
-        [ngClass]="{ active: historyTableToggle === t.id }"
+        [ngStyle]="{ cursor: t.detail.length > 0 && 'pointer' }"
+        [ngClass]="{
+          active:
+            t.detail.length > 0 &&
+            (subTableToggleAll || subTableToggle === t.id)
+        }"
         (click)="
-          t.history.length > 0 &&
-            (historyTableToggle = historyTableToggle === t.id ? '' : t.id);
-          historyTableToggleAll = false
+          t.detail.length > 0 &&
+            (subTableToggle = subTableToggleAll
+              ? ''
+              : subTableToggle === t.id
+              ? ''
+              : t.id);
+          subTableToggleAll = false
         "
       >
         <td>
           <b>{{ i }}</b>
         </td>
         <td>
-          <ng-container *ngIf="t.history.length > 0">
+          <ng-container *ngIf="t.detail.length > 0">
             <div
-              *ngIf="t.id === historyTableToggle; else unSeletedHistory"
-              class="glyphicon glyphicon-chevron-down"
+              *ngIf="
+                !(subTableToggleAll || t.id === subTableToggle);
+                else subTableToggleRef
+              "
+              class="glyphicon glyphicon-chevron-up"
             ></div>
-            <ng-template #unSeletedHistory>
-              <div class="glyphicon glyphicon-chevron-up"></div>
+            <ng-template #subTableToggleRef>
+              <div class="glyphicon glyphicon-chevron-down"></div>
             </ng-template>
           </ng-container>
         </td>
@@ -77,13 +88,12 @@
 
       <tr
         *ngIf="
-          t.history.length > 0 &&
-          (historyTableToggleAll || historyTableToggle === t.id)
+          t.detail.length > 0 && (subTableToggleAll || subTableToggle === t.id)
         "
       >
         <td></td>
         <td colspan="100%">
-          <custom-history-table [history]="t.history"></custom-history-table>
+          <custom-variable-table [detail]="t.detail"></custom-variable-table>
         </td>
       </tr>
     </ng-container>

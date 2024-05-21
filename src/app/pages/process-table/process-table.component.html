@@ -1,7 +1,7 @@
-<custom-history-table
+<custom-variable-table
   *ngIf="processInstanceDetail$ | async as p; else loading"
-  [history]="p"
-></custom-history-table>
+  [detail]="p"
+></custom-variable-table>
 
 <ng-template #loading>
   <custom-loading></custom-loading>

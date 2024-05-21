@@ -28,4 +28,6 @@ export interface Detail {
   fieldValue?: string;
 }
 
-export interface ValueInfo {}
+export interface ValueInfo {
+filename: any;
+}

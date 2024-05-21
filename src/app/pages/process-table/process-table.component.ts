@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Observable, from, map, switchMap, toArray } from "rxjs";
-import { DetailService } from "../../history/process-instance/detail/detail.service";
-import { History } from "../../history/process-instance/history";
-import { TaskService } from "../../history/process-instance/task/task.service";
+import { Observable, switchMap, toArray } from "rxjs";
+import { Detail } from "src/app/process-instance/detail/detail";
+import { DetailService } from "../../process-instance/detail/detail.service";
+import { TaskService } from "../../process-instance/task/task.service";
 
 @Component({
   selector: "custom-process-table[taskid]",
@@ -10,7 +10,7 @@ import { TaskService } from "../../history/process-instance/task/task.service";
   styleUrls: ["./process-table.component.css"],
 })
 export class ProcessTableComponent implements OnInit {
-  processInstanceDetail$: Observable<History[]>;
+  processInstanceDetail$: Observable<Detail[]>;
 
   @Input()
   taskid!: string;
@@ -29,10 +29,7 @@ export class ProcessTableComponent implements OnInit {
             .findManyProcessInstanceDetail({
               processInstanceId,
             })
-            .pipe(
-              switchMap((details) => from(details)),
-              map(History.fromDetail)
-            )
+            .pipe(switchMap((details) => details))
         ),
         toArray()
       );

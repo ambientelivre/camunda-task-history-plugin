@@ -1,4 +1,4 @@
-<ng-container *ngIf="history$ | async as h; else loading">
+<ng-container *ngIf="detail$ | async as d; else loading">
   <ng-template #header>
     <tr customSortHeader (sortClick)="sortBy = $event">
       <th>#</th>
@@ -6,7 +6,7 @@
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.ACTION" | translate }}
       </th>
-      <th customSortColumnId="key">
+      <th customSortColumnId="variableName">
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.VARIABLE_NAME" | translate }}
       </th>
@@ -14,11 +14,11 @@
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.VARIABLE_VALUE" | translate }}
       </th>
-      <th customSortColumnId="startTime">
+      <th customSortColumnId="time">
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.CREATION_DATE" | translate }}
       </th>
-      <th customSortColumnId="endTime">
+      <th customSortColumnId="removalTime">
         <custom-sort-column-icon></custom-sort-column-icon>
         {{ "labels.FINISHED" | translate }}
       </th>
@@ -27,18 +27,18 @@
 
   <ng-template #body>
     <tr
-      *ngFor="let h of h | customSort : sortBy.id : sortBy.order; let i = index"
+      *ngFor="let d of d | customSort : sortBy.id : sortBy.order; let i = index"
     >
       <td>
         <b>{{ i }}</b>
       </td>
-      <td>{{ h.type }}</td>
-      <td>{{ h.key }}</td>
-      <td [ngSwitch]="h.valueType">
+      <td>{{ d.type }}</td>
+      <td>{{ d.variableName }}</td>
+      <td [ngSwitch]="d.variableType">
         <ng-container *ngSwitchCase="'Null'"></ng-container>
 
         <div *ngSwitchCase="'String'" class="form-group">
-          <input class="form-control" type="text" readonly [value]="h.value" />
+          <input class="form-control" type="text" readonly [value]="d.value" />
         </div>
 
         <div *ngSwitchCase="'Boolean'" class="form-group">
@@ -46,7 +46,7 @@
             class="form-control"
             type="checkbox"
             disabled
-            [checked]="h.value"
+            [checked]="d.value"
           />
         </div>
 
@@ -72,18 +72,18 @@
               class="form-control"
               type="number"
               readonly
-              [value]="h.value"
+              [value]="d.value"
             />
           </div>
         </ng-template>
 
         <div style="display: flex; gap: 1em">
-          <b>{{ h.valueInfo.filename }}</b>
+          <b>{{ d.valueInfo.filename }}</b>
 
           <a
             *ngSwitchCase="'File'"
             href="/camunda/api/engine/engine/default/variable-instance/{{
-              h.id
+              d.id
             }}/data"
             ><button type="button" class="btn btn-primary">
               {{ "labels.DOWNLOAD" | translate }}
@@ -93,15 +93,15 @@
 
         <ngx-json-viewer
           *ngSwitchCase="'Json'"
-          [json]="parse(h.value)"
+          [json]="parse(d.value)"
         ></ngx-json-viewer>
 
         <ng-container *ngSwitchDefault>
-          <ngx-json-viewer [json]="h.value"></ngx-json-viewer>
+          <ngx-json-viewer [json]="d.value"></ngx-json-viewer>
         </ng-container>
       </td>
-      <td>{{ h.startTime | date : "M/d/yy, h:mm:ss" }}</td>
-      <td>{{ h.endTime | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
+      <td>{{ d.removalTime | date : "M/d/yy, h:mm:ss" }}</td>
     </tr>
   </ng-template>
 
