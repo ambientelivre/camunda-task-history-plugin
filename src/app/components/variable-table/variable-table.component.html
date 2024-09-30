@@ -93,11 +93,13 @@
 
         <ngx-json-viewer
           *ngSwitchCase="'Json'"
-          [json]="parse(d.value)"
+          [json]="d.value === null ? undefined : parse(d.value)"
         ></ngx-json-viewer>
 
         <ng-container *ngSwitchDefault>
-          <ngx-json-viewer [json]="d.value"></ngx-json-viewer>
+          <ngx-json-viewer
+            [json]="d.value === null ? undefined : d.value"
+          ></ngx-json-viewer>
         </ng-container>
       </td>
       <td>{{ d.time | date : "M/d/yy, h:mm:ss" }}</td>
