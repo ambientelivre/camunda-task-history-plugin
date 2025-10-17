@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "buildPlugin": "ng build --configuration production --output-hashing=none | node plugin/build"
+    "buildPlugin": "ng build --configuration production --output-hashing=none && node plugin/build"
   },
   "private": true,
   "dependencies": {

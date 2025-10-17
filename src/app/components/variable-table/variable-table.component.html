@@ -82,9 +82,9 @@
 
           <a
             *ngSwitchCase="'File'"
-            href="/camunda/api/engine/engine/default/variable-instance/{{
-              d.id
-            }}/data"
+            href="/{{
+              ACTIVE_CAMUNDA_TYPE
+            }}/api/engine/engine/default/variable-instance/{{ d.id }}/data"
             ><button type="button" class="btn btn-primary">
               {{ "labels.DOWNLOAD" | translate }}
             </button></a
